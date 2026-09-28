@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Interactive B2 review of English conditionals for Czech upper-secondary students: zero, first, second, third and mixed conditionals." />
+  <title>Conditionals // Mastery Lab — 4A4</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg2: #0a1728;
+      --panel: rgba(16, 31, 52, .78);
+      --panel2: rgba(11, 24, 42, .9);
+      --line: rgba(255,255,255,.11);
+      --text: #f5f7fb;
+      --muted: #9fb1c9;
+      --cyan: #55d8ff;
+      --blue: #7398ff;
+      --violet: #b38cff;
+      --green: #69e6b0;
+      --amber: #ffcf70;
+      --red: #ff7f92;
+      --shadow: 0 28px 80px rgba(0,0,0,.36);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(85,216,255,.13), transparent 31%),
+        radial-gradient(circle at 88% 12%, rgba(179,140,255,.11), transparent 29%),
+        radial-gradient(circle at 50% 100%, rgba(105,230,176,.07), transparent 34%),
+        linear-gradient(160deg, var(--bg) 0%, var(--bg2) 58%, #08111c 100%);
+      min-height: 100vh;
+      line-height: 1.55;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .24;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+    }
+
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(6, 15, 27, .76);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 220px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .brand-mark {
+      width: 36px; height: 36px;
+      display: grid; place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(85,216,255,.24), rgba(115,152,255,.22));
+      border: 1px solid rgba(85,216,255,.24);
+      color: var(--cyan);
+      box-shadow: inset 0 0 24px rgba(85,216,255,.08);
+    }
+    .brand small { color: var(--muted); font-weight: 600; }
+
+    .progress-shell {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      width: 0%; height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+      transition: width .25s ease;
+    }
+
+    .top-actions { display: flex; gap: 8px; }
+    .ghost-btn, .primary-btn, .mini-btn {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.055);
+      border-radius: 14px;
+      padding: 9px 13px;
+      transition: .2s ease;
+    }
+    .ghost-btn:hover, .mini-btn:hover { background: rgba(255,255,255,.095); transform: translateY(-1px); }
+    .primary-btn {
+      border-color: rgba(85,216,255,.3);
+      background: linear-gradient(135deg, rgba(85,216,255,.18), rgba(115,152,255,.18));
+      box-shadow: 0 12px 34px rgba(85,216,255,.08);
+    }
+    .primary-btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+    .mini-btn { padding: 7px 10px; border-radius: 12px; font-size: .9rem; }
+
+    main { max-width: var(--max); margin: 0 auto; padding: 34px 18px 100px; }
+    section { scroll-margin-top: 82px; margin: 0 0 30px; }
+
+    .hero {
+      min-height: 72vh;
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 24px;
+      align-items: center;
+      padding: 54px 0 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--cyan); opacity: .7; }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      font-size: clamp(3rem, 8vw, 6.8rem);
+      line-height: .92;
+      letter-spacing: -.065em;
+      margin-bottom: 20px;
+      max-width: 850px;
+    }
+    h1 .accent {
+      background: linear-gradient(90deg, var(--cyan), #91b6ff 48%, var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      font-size: clamp(1.08rem, 2vw, 1.35rem);
+      color: #c9d5e6;
+      max-width: 760px;
+    }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.045);
+      color: #d9e3ef;
+      font-size: .93rem;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 16px rgba(105,230,176,.6); }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .hero-card {
+      padding: 26px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)),
+        rgba(10, 24, 42, .76);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: "IF";
+      position: absolute;
+      right: -6px; bottom: -34px;
+      font-size: 10rem;
+      font-weight: 900;
+      letter-spacing: -.12em;
+      color: rgba(255,255,255,.028);
+      pointer-events: none;
+    }
+    .hero-card h3 { margin-bottom: 8px; }
+    .hero-card .big-number { font-size: 3.8rem; font-weight: 900; line-height: 1; letter-spacing: -.06em; }
+    .hero-card .muted { color: var(--muted); }
+    .hero-card hr { border: 0; height: 1px; background: var(--line); margin: 22px 0; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+    .section-head h2 { font-size: clamp(1.8rem, 3vw, 3rem); letter-spacing: -.035em; margin-bottom: 4px; }
+    .section-head p { margin: 0; color: var(--muted); max-width: 720px; }
+    .section-index { color: var(--cyan); font-weight: 900; font-size: .9rem; letter-spacing: .14em; }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      padding: 22px;
+    }
+
+    .goal-grid, .card-grid, .compare-grid, .mixed-grid, .diff-grid, .precision-grid {
+      display: grid;
+      gap: 14px;
+    }
+    .goal-grid { grid-template-columns: repeat(4, 1fr); }
+    .card-grid { grid-template-columns: repeat(5, 1fr); }
+    .compare-grid { grid-template-columns: 1fr 1fr; }
+    .mixed-grid { grid-template-columns: 1fr 1fr; }
+    .diff-grid { grid-template-columns: 1fr 1fr; }
+    .precision-grid { grid-template-columns: repeat(4, 1fr); }
+
+    .goal-card, .cond-card, .compare-card, .diff-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,.035);
+    }
+    .goal-card strong, .cond-card strong { display: block; margin-bottom: 6px; }
+    .goal-card p, .cond-card p, .compare-card p, .diff-card p { color: var(--muted); margin-bottom: 0; }
+
+    .cond-card { min-height: 230px; position: relative; overflow: hidden; }
+    .cond-card .num {
+      display: inline-grid; place-items: center;
+      width: 34px; height: 34px;
+      border-radius: 11px;
+      background: rgba(85,216,255,.09);
+      color: var(--cyan);
+      border: 1px solid rgba(85,216,255,.18);
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+    .cond-card:nth-child(2) .num { color: var(--green); background: rgba(105,230,176,.08); border-color: rgba(105,230,176,.18); }
+    .cond-card:nth-child(3) .num { color: var(--amber); background: rgba(255,207,112,.08); border-color: rgba(255,207,112,.18); }
+    .cond-card:nth-child(4) .num { color: var(--violet); background: rgba(179,140,255,.08); border-color: rgba(179,140,255,.18); }
+    .cond-card:nth-child(5) .num { color: #ff9fda; background: rgba(255,159,218,.08); border-color: rgba(255,159,218,.18); }
+    .formula {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #eef5ff;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+      padding: 10px 11px;
+      margin: 12px 0;
+      font-size: .88rem;
+    }
+    .memory-hook { color: #cbd6e5; font-size: .92rem; }
+    .memory-hook b { color: var(--cyan); }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      gap: 0;
+      margin: 22px 0 8px;
+      padding: 0 12px;
+    }
+    .time-node { text-align: center; position: relative; }
+    .time-node::before { content: ""; position: absolute; top: 12px; left: -50%; width: 100%; height: 2px; background: rgba(255,255,255,.1); z-index: 0; }
+    .time-node:first-child::before { display: none; }
+    .time-dot { width: 26px; height: 26px; margin: 0 auto 9px; border-radius: 50%; background: #122942; border: 6px solid #0b1a2d; outline: 2px solid rgba(85,216,255,.35); position: relative; z-index: 1; }
+    .time-node.active .time-dot { background: var(--cyan); box-shadow: 0 0 26px rgba(85,216,255,.35); }
+    .time-node span { color: var(--muted); font-size: .9rem; }
+
+    .callout {
+      border-left: 3px solid var(--cyan);
+      background: rgba(85,216,255,.06);
+      border-radius: 0 16px 16px 0;
+      padding: 15px 17px;
+      color: #dbe7f5;
+      margin: 14px 0;
+    }
+    .callout.amber { border-left-color: var(--amber); background: rgba(255,207,112,.055); }
+    .callout.violet { border-left-color: var(--violet); background: rgba(179,140,255,.055); }
+    .callout.green { border-left-color: var(--green); background: rgba(105,230,176,.055); }
+
+    .quiz-list { display: grid; gap: 13px; }
+    .q-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 17px;
+      background: rgba(255,255,255,.032);
+      transition: .2s ease;
+    }
+    .q-card.correct { border-color: rgba(105,230,176,.38); background: rgba(105,230,176,.055); }
+    .q-card.incorrect { border-color: rgba(255,127,146,.38); background: rgba(255,127,146,.05); }
+    .q-top { display: flex; gap: 12px; align-items: flex-start; }
+    .q-number { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.07); color: var(--muted); font-size: .85rem; font-weight: 800; }
+    .q-text { font-size: 1.05rem; font-weight: 700; flex: 1; }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0 42px; }
+    .option {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+      color: #e6edf7;
+      border-radius: 12px;
+      padding: 8px 11px;
+    }
+    .option:hover { background: rgba(255,255,255,.08); }
+    .option.selected { border-color: rgba(85,216,255,.55); background: rgba(85,216,255,.09); }
+    .option.right { border-color: rgba(105,230,176,.55); background: rgba(105,230,176,.09); }
+    .option.wrong { border-color: rgba(255,127,146,.55); background: rgba(255,127,146,.08); }
+    .feedback { margin: 11px 0 0 42px; color: var(--muted); display: none; }
+    .feedback.show { display: block; }
+    .feedback strong { color: var(--text); }
+
+    .input-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 12px; }
+    .text-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      padding: 11px 13px;
+      outline: none;
+    }
+    .text-input:focus { border-color: rgba(85,216,255,.45); box-shadow: 0 0 0 3px rgba(85,216,255,.07); }
+
+    .scorebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .score-pill { display: inline-flex; gap: 8px; align-items: baseline; }
+    .score-pill strong { font-size: 1.8rem; letter-spacing: -.04em; }
+    .score-pill span { color: var(--muted); }
+
+    .scenario {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,.033);
+    }
+    .scenario + .scenario { margin-top: 12px; }
+    .scenario-tag { color: var(--cyan); text-transform: uppercase; letter-spacing: .13em; font-size: .75rem; font-weight: 900; }
+    .scenario h3 { margin: 5px 0 8px; }
+    .scenario .prompt { color: #dfe8f4; }
+    .reveal {
+      display: none;
+      margin-top: 12px;
+      color: #cad8e9;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+    .reveal.show { display: block; }
+
+    .keyline { height: 1px; background: var(--line); margin: 20px 0; }
+    .subtle { color: var(--muted); }
+    .tiny { color: var(--muted); font-size: .83rem; }
+    .good { color: var(--green); }
+    .warn { color: var(--amber); }
+    .bad { color: var(--red); }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 34px 0 12px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .source-list { display: grid; gap: 7px; margin-top: 10px; }
+    .source-list a { color: #d7e5f4; text-decoration: none; }
+    .source-list a:hover { color: var(--cyan); }
+
+    .projector body, body.projector { font-size: 18px; }
+    body.projector main { max-width: 1320px; }
+    body.projector .topbar { position: static; }
+    body.projector .topbar-inner { max-width: 1320px; }
+    body.projector .section-head h2 { font-size: clamp(2.1rem, 4vw, 3.5rem); }
+    body.projector .q-text { font-size: 1.16rem; }
+    body.projector .options { gap: 10px; }
+
+    .teacher-note {
+      display: none;
+      border: 1px dashed rgba(255,207,112,.28);
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      color: #eadcb8;
+      background: rgba(255,207,112,.035);
+    }
+    body.teacher .teacher-note { display: block; }
+
+    .nav-drawer {
+      position: fixed;
+      right: 18px; bottom: 18px;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      align-items: flex-end;
+    }
+    .nav-drawer .jump-menu {
+      display: none;
+      width: min(330px, calc(100vw - 36px));
+      max-height: 62vh;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(8, 20, 35, .95);
+      backdrop-filter: blur(16px);
+      padding: 10px;
+      box-shadow: var(--shadow);
+    }
+    .jump-menu.show { display: grid; gap: 6px; }
+    .jump-menu a { text-decoration: none; padding: 9px 10px; border-radius: 11px; color: #d9e5f3; }
+    .jump-menu a:hover { background: rgba(255,255,255,.07); }
+    .fab { width: 48px; height: 48px; border-radius: 16px; border: 1px solid rgba(85,216,255,.22); background: rgba(11, 27, 47, .92); color: var(--cyan); box-shadow: 0 14px 40px rgba(0,0,0,.3); }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; min-height: unset; }
+      .goal-grid { grid-template-columns: 1fr 1fr; }
+      .card-grid { grid-template-columns: 1fr 1fr; }
+      .cond-card:last-child { grid-column: span 2; }
+      .brand { min-width: auto; }
+      .brand .brand-copy { display: none; }
+    }
+    @media (max-width: 700px) {
+      main { padding-top: 18px; }
+      .hero { padding-top: 36px; }
+      .goal-grid, .card-grid, .compare-grid, .mixed-grid, .diff-grid, .precision-grid { grid-template-columns: 1fr; }
+      .cond-card:last-child { grid-column: auto; }
+      .topbar-inner { gap: 8px; }
+      .top-actions .label { display: none; }
+      .progress-shell { display: none; }
+      .options, .feedback { margin-left: 0; }
+      .input-row { grid-template-columns: 1fr; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media print {
+      body { background: white; color: #111; }
+      body::before, .topbar, .nav-drawer, .hero-actions, button { display: none !important; }
+      main { max-width: none; padding: 0; }
+      .panel, .goal-card, .cond-card, .compare-card, .q-card, .scenario, .diff-card { background: white; color: #111; border-color: #ccc; box-shadow: none; break-inside: avoid; }
+      .subtle, .tiny, .goal-card p, .cond-card p, .compare-card p, .diff-card p, .feedback, .source-list { color: #444; }
+      .formula { background: #f4f4f4; color: #111; border-color: #ddd; }
+      .reveal { display: block; color: #222; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">IF</div>
+        <div class="brand-copy">Conditionals <small>// 4A4</small></div>
+      </div>
+      <div class="progress-shell" aria-label="Page progress"><div id="pageProgress" class="progress-fill"></div></div>
+      <div class="top-actions">
+        <button class="ghost-btn" id="teacherBtn" title="Toggle teacher notes">⌁ <span class="label">Teacher</span></button>
+        <button class="primary-btn" id="projectorBtn" title="Projector mode / fullscreen">⛶ <span class="label">Projector</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="start">
+      <div>
+        <div class="eyebrow">Grammar mastery lab</div>
+        <h1>Conditionals.<br><span class="accent">Meaning first.</span></h1>
+        <p class="lead">Zero → first → second → third → mixed. One visual system, five meanings, and enough deliberate practice to make the forms automatic.</p>
+        <div class="hero-meta">
+          <span class="chip"><span class="dot"></span> Target: B2 / Maturita</span>
+          <span class="chip">4A4 · approx. 18–19</span>
+          <span class="chip">45–60 min</span>
+          <span class="chip">Projector + individual practice</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#map"><button class="primary-btn">Start the review →</button></a>
+          <a href="#final"><button class="ghost-btn">Jump to final challenge</button></a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div class="tiny">TODAY'S MISSION</div>
+        <div class="big-number">5</div>
+        <h3>conditional patterns</h3>
+        <p class="muted">You do not need five unrelated rules. You need to see <strong>time</strong>, <strong>reality</strong> and <strong>result</strong>.</p>
+        <hr>
+        <div class="tiny">SUCCESS CRITERION</div>
+        <p style="margin:6px 0 0">Choose the right conditional <strong>because of meaning</strong>, then build it accurately.</p>
+      </aside>
+    </section>
+
+    <section id="setup">
+      <div class="section-head">
+        <div><div class="section-index">00 // SETUP</div><h2>What you should be able to do</h2></div>
+        <p>Use the grammar, not just name it. The goal is accurate choice under time pressure.</p>
+      </div>
+      <div class="goal-grid">
+        <div class="goal-card"><strong>1 · Recognise</strong><p>Identify the meaning and time reference of a conditional.</p></div>
+        <div class="goal-card"><strong>2 · Build</strong><p>Form zero, first, second, third and mixed conditionals accurately.</p></div>
+        <div class="goal-card"><strong>3 · Contrast</strong><p>Explain why <em>if it rains</em> and <em>if it rained</em> do not mean the same thing.</p></div>
+        <div class="goal-card"><strong>4 · Produce</strong><p>Use conditionals naturally in Maturita-style speaking and writing.</p></div>
+      </div>
+      <div class="teacher-note"><strong>Teacher:</strong> Ask students to predict which two conditional types they confuse most. Revisit their answers after the final challenge.</div>
+    </section>
+
+    <section id="map">
+      <div class="section-head">
+        <div><div class="section-index">01 // MAP</div><h2>The whole system on one screen</h2></div>
+        <p>First decide what the sentence means. The form then follows.</p>
+      </div>
+      <div class="card-grid">
+        <article class="cond-card">
+          <div class="num">0</div>
+          <strong>Zero conditional</strong>
+          <p>Facts, routines, things that are generally true.</p>
+          <div class="formula">if + present → present</div>
+          <div class="memory-hook"><b>WHENEVER</b> this happens, that happens.</div>
+        </article>
+        <article class="cond-card">
+          <div class="num">1</div>
+          <strong>First conditional</strong>
+          <p>A real / possible future condition and its likely result.</p>
+          <div class="formula">if + present → will + infinitive</div>
+          <div class="memory-hook"><b>JESTLI</b> — I see it as a real possibility.</div>
+        </article>
+        <article class="cond-card">
+          <div class="num">2</div>
+          <strong>Second conditional</strong>
+          <p>An unreal, unlikely or imagined present/future situation.</p>
+          <div class="formula">if + past → would + infinitive</div>
+          <div class="memory-hook"><b>KDYBY</b> — imagine the situation now.</div>
+        </article>
+        <article class="cond-card">
+          <div class="num">3</div>
+          <strong>Third conditional</strong>
+          <p>An unreal past: reality is already fixed.</p>
+          <div class="formula">if + past perfect → would have + V3</div>
+          <div class="memory-hook"><b>KDYBY BÝVAL</b> — rewrite the past.</div>
+        </article>
+        <article class="cond-card">
+          <div class="num">M</div>
+          <strong>Mixed conditionals</strong>
+          <p>Cause and result live in different times.</p>
+          <div class="formula">past cause → present result<br>present state → past result</div>
+          <div class="memory-hook"><b>MIX TIME</b>, not random grammar.</div>
+        </article>
+      </div>
+      <div class="callout"><strong>Core insight:</strong> conditionals are not primarily about “number 1, 2, 3”. They encode the speaker’s view of <strong>reality / probability</strong> and the <strong>time</strong> of the condition and result.</div>
+    </section>
+
+    <section id="timeline">
+      <div class="section-head">
+        <div><div class="section-index">02 // TIME + REALITY</div><h2>Put the meaning on a timeline</h2></div>
+        <p>This is the fastest way to separate second, third and mixed conditionals.</p>
+      </div>
+      <div class="panel">
+        <div class="timeline">
+          <div class="time-node"><div class="time-dot"></div><strong>PAST</strong><br><span>finished reality</span></div>
+          <div class="time-node active"><div class="time-dot"></div><strong>NOW</strong><br><span>current state</span></div>
+          <div class="time-node"><div class="time-dot"></div><strong>FUTURE</strong><br><span>possible / imagined</span></div>
+        </div>
+        <div class="compare-grid" style="margin-top:24px">
+          <div class="compare-card">
+            <div class="tiny">SECOND CONDITIONAL</div>
+            <h3>If I <span class="warn">had</span> more time, I <span class="warn">would exercise</span> more.</h3>
+            <p>Condition = unreal now. Result = imagined now / future.</p>
+          </div>
+          <div class="compare-card">
+            <div class="tiny">THIRD CONDITIONAL</div>
+            <h3>If I <span class="warn">had had</span> more time, I <span class="warn">would have exercised</span> more.</h3>
+            <p>Condition = unreal past. Result = unreal past.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="diagnostic">
+      <div class="section-head">
+        <div><div class="section-index">03 // DIAGNOSTIC</div><h2>Can you see the meaning?</h2></div>
+        <p>Do not calculate the tense first. Ask: fact, real possibility, unreal now, unreal past, or mixed time?</p>
+      </div>
+      <div class="panel">
+        <div id="diagnosticQuiz" class="quiz-list"></div>
+        <div class="scorebar">
+          <div class="score-pill"><strong id="diagScore">0/8</strong><span>checked</span></div>
+          <button class="ghost-btn" onclick="resetQuiz('diagnostic')">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="contrast">
+      <div class="section-head">
+        <div><div class="section-index">04 // CONTRAST</div><h2>First or second? The speaker chooses.</h2></div>
+        <p>The difference is often not objective probability. It is how the speaker frames the situation.</p>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="tiny good">REAL / OPEN</div>
+          <h3>If I <u>get</u> the job, I <u>will move</u> to Brno.</h3>
+          <p>I regard getting the job as a genuine possibility.</p>
+        </div>
+        <div class="compare-card">
+          <div class="tiny warn">HYPOTHETICAL / REMOTE</div>
+          <h3>If I <u>got</u> the job, I <u>would move</u> to Brno.</h3>
+          <p>I am imagining it more hypothetically or I think it is unlikely.</p>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div id="contrastQuiz" class="quiz-list"></div>
+      </div>
+    </section>
+
+    <section id="forms">
+      <div class="section-head">
+        <div><div class="section-index">05 // FORM BUILDER</div><h2>Build it accurately</h2></div>
+        <p>Type the missing verb phrase. Contractions and full forms are both accepted where sensible.</p>
+      </div>
+      <div class="panel">
+        <div id="gapQuiz" class="quiz-list"></div>
+        <div class="scorebar">
+          <div class="score-pill"><strong id="gapScore">0/10</strong><span>correct</span></div>
+          <button class="ghost-btn" onclick="resetQuiz('gap')">Reset</button>
+        </div>
+      </div>
+      <div class="callout amber"><strong>Exam-safe default:</strong> in an ordinary first conditional, use a present form after <em>if</em>, not future <em>will</em>. In an ordinary second conditional, do not mechanically put <em>would</em> in the if-clause. Advanced exceptions exist when <em>will / would</em> carries its own meaning such as willingness, insistence or politeness.</div>
+    </section>
+
+    <section id="mixed">
+      <div class="section-head">
+        <div><div class="section-index">06 // MIXED</div><h2>Mixed conditionals = mixed time</h2></div>
+        <p>Find the time of the cause and the time of the consequence. Then combine the familiar patterns.</p>
+      </div>
+      <div class="mixed-grid">
+        <div class="compare-card">
+          <div class="tiny">PAST CAUSE → PRESENT RESULT</div>
+          <div class="formula">if + past perfect → would + infinitive</div>
+          <h3>If I had gone to bed earlier, I wouldn't be so tired now.</h3>
+          <p>I didn't go to bed early <strong>then</strong> → I am tired <strong>now</strong>.</p>
+        </div>
+        <div class="compare-card">
+          <div class="tiny">PRESENT STATE → PAST RESULT</div>
+          <div class="formula">if + past → would have + V3</div>
+          <h3>If I were more organised, I wouldn't have missed the deadline yesterday.</h3>
+          <p>I am not organised <strong>in general / now</strong> → I missed it <strong>then</strong>.</p>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div id="mixedQuiz" class="quiz-list"></div>
+      </div>
+    </section>
+
+    <section id="surgery">
+      <div class="section-head">
+        <div><div class="section-index">07 // ERROR SURGERY</div><h2>Repair the sentence</h2></div>
+        <p>These are the errors that survive even when students “know the rule”.</p>
+      </div>
+      <div class="panel">
+        <div id="errorQuiz" class="quiz-list"></div>
+      </div>
+    </section>
+
+    <section id="extras">
+      <div class="section-head">
+        <div><div class="section-index">08 // PRECISION</div><h2>Small details that raise your accuracy</h2></div>
+        <p>These are useful for Maturita writing and speaking, but the core conditional meaning stays the same.</p>
+      </div>
+      <div class="precision-grid">
+        <div class="goal-card"><strong>Unless</strong><p><em>unless = if … not</em>. “Unless you hurry, you'll miss it.” Avoid a second negative.</p></div>
+        <div class="goal-card"><strong>Were</strong><p>For hypothetical <em>be</em>, <em>If I were you…</em> is the safest formal/exam choice.</p></div>
+        <div class="goal-card"><strong>Modal results</strong><p>Results can use <em>may, might, could, can</em> where the meaning fits — not only will/would.</p></div>
+        <div class="goal-card"><strong>Comma</strong><p>If the if-clause comes first, use a comma. If it comes second, a comma is usually unnecessary.</p></div>
+      </div>
+      <div class="teacher-note"><strong>Stronger class extension:</strong> contrast “If you will wait here…” (willingness/polite request) with ordinary future conditionals. Keep this as nuance, not the first rule students remember.</div>
+    </section>
+
+    <section id="speaking">
+      <div class="section-head">
+        <div><div class="section-index">09 // MATURITA SPEAKING</div><h2>From grammar to actual communication</h2></div>
+        <p>Work in pairs. One student answers; the partner must ask one follow-up question containing another conditional.</p>
+      </div>
+      <div class="scenario">
+        <div class="scenario-tag">Scenario A · choices</div>
+        <h3>Your school offers you a six-month exchange abroad.</h3>
+        <p class="prompt">What will you do if you are accepted? What would you do if the destination were somewhere you did not expect?</p>
+        <button class="mini-btn" onclick="toggleReveal(this)">Reveal language support</button>
+        <div class="reveal"><strong>Support:</strong> If I get accepted, I’ll… / If the destination were…, I’d… / Unless…, I probably wouldn’t…</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-tag">Scenario B · regrets</div>
+        <h3>Think of a decision you made in the last two years.</h3>
+        <p class="prompt">How would things have been different if you had chosen differently? Is there any effect on your life now?</p>
+        <button class="mini-btn" onclick="toggleReveal(this)">Reveal language support</button>
+        <div class="reveal"><strong>Support:</strong> If I had…, I would have… / If I had…, I would be… now.</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-tag">Scenario C · society</div>
+        <h3>Imagine one major change in education, transport, technology or the environment.</h3>
+        <p class="prompt">What would happen if the change were introduced? What happens when people ignore the problem?</p>
+        <button class="mini-btn" onclick="toggleReveal(this)">Reveal language support</button>
+        <div class="reveal"><strong>Support:</strong> If schools introduced…, students would… / If people ignore…, … happens.</div>
+      </div>
+    </section>
+
+    <section id="final">
+      <div class="section-head">
+        <div><div class="section-index">10 // FINAL CHALLENGE</div><h2>One test. All conditionals.</h2></div>
+        <p>12 items. Choose the sentence that best matches the meaning or complete the form.</p>
+      </div>
+      <div class="panel">
+        <div id="finalQuiz" class="quiz-list"></div>
+        <div class="scorebar">
+          <div>
+            <div class="score-pill"><strong id="finalScore">0/12</strong><span>score</span></div>
+            <div id="finalMessage" class="tiny">Finish the challenge to get a diagnostic message.</div>
+          </div>
+          <button class="ghost-btn" onclick="resetQuiz('final')">Reset final challenge</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="differentiation">
+      <div class="section-head">
+        <div><div class="section-index">11 // DIFFERENTIATION</div><h2>Two routes through the same lesson</h2></div>
+        <p>Use this if students finish at different speeds.</p>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <div class="tiny good">SUPPORT ROUTE</div>
+          <h3>For students who still hesitate</h3>
+          <p>Keep the five-card map visible. Before every answer, say the meaning aloud: <em>fact / real future / unreal now / unreal past / mixed time</em>. Then choose the form.</p>
+          <div class="keyline"></div>
+          <p><strong>Minimum target:</strong> 0–3 conditionals accurate; recognise the two mixed patterns with support.</p>
+        </div>
+        <div class="diff-card">
+          <div class="tiny warn">CHALLENGE ROUTE</div>
+          <h3>For students who are already secure</h3>
+          <p>Rewrite answers using <em>unless</em>, modal results, inversion (<em>Had I known…</em>) or more nuanced probability. Explain how changing 1st → 2nd changes the speaker’s stance.</p>
+          <div class="keyline"></div>
+          <p><strong>Stretch target:</strong> manipulate conditionals deliberately for style and nuance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="exit">
+      <div class="section-head">
+        <div><div class="section-index">12 // EXIT TICKET</div><h2>Before you leave</h2></div>
+        <p>Say one sentence for each prompt without looking at the map.</p>
+      </div>
+      <div class="goal-grid">
+        <div class="goal-card"><strong>Fact</strong><p>If …, …</p></div>
+        <div class="goal-card"><strong>Real future</strong><p>If …, I’ll …</p></div>
+        <div class="goal-card"><strong>Unreal now</strong><p>If I …, I’d …</p></div>
+        <div class="goal-card"><strong>Past → now</strong><p>If I had …, I’d be … now.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>Content basis</strong>
+      <p>This lesson paraphrases and reorganises core explanations from Help for English. Exercises and examples in this file are newly written for this class.</p>
+      <div class="source-list">
+        <a href="https://www.helpforenglish.cz/article/2006051701-podminkove-vety-prehled" target="_blank" rel="noopener">Help for English — Podmínkové věty: přehled</a>
+        <a href="https://www.helpforenglish.cz/article/2022050703-podminkove-vety-prvni-kondicional-jestli-tak" target="_blank" rel="noopener">Help for English — První kondicionál</a>
+        <a href="https://www.helpforenglish.cz/article/2022051603-podminkove-vety-druhy-kondicional-kdyby-tak-by" target="_blank" rel="noopener">Help for English — Druhý kondicionál</a>
+        <a href="https://www.helpforenglish.cz/article/2022052204-podminkove-vety-treti-kondicional-kdyby-byval" target="_blank" rel="noopener">Help for English — Třetí kondicionál</a>
+        <a href="https://www.helpforenglish.cz/article/2007051002-smisene-kondicionaly-mixed-conditionals" target="_blank" rel="noopener">Help for English — Smíšené kondicionály</a>
+        <a href="https://www.helpforenglish.cz/article/2008072201-will-a-would-v-podminkovych-vetach" target="_blank" rel="noopener">Help for English — WILL a WOULD v podmínkových větách</a>
+      </div>
+      <p class="tiny" style="margin-top:18px">Single-file lesson · no external libraries · progress stored only in this browser.</p>
+    </footer>
+  </main>
+
+  <div class="nav-drawer">
+    <div id="jumpMenu" class="jump-menu">
+      <a href="#map">01 · System map</a>
+      <a href="#timeline">02 · Time + reality</a>
+      <a href="#diagnostic">03 · Diagnostic</a>
+      <a href="#contrast">04 · First vs second</a>
+      <a href="#forms">05 · Form builder</a>
+      <a href="#mixed">06 · Mixed conditionals</a>
+      <a href="#surgery">07 · Error surgery</a>
+      <a href="#extras">08 · Precision</a>
+      <a href="#speaking">09 · Speaking</a>
+      <a href="#final">10 · Final challenge</a>
+      <a href="#differentiation">11 · Differentiation</a>
+      <a href="#exit">12 · Exit ticket</a>
+    </div>
+    <button class="fab" id="menuBtn" aria-label="Open navigation">☰</button>
+  </div>
+
+  <script>
+    const quizData = {
+      diagnostic: [
+        { q: "If you heat ice, it melts.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 0, why: "General truth: present + present." },
+        { q: "If I finish early, I'll call you.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 1, why: "A real future possibility: present in the if-clause, future result." },
+        { q: "If I lived closer, I'd walk to school.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 2, why: "Unreal / hypothetical present situation." },
+        { q: "If she had checked the address, she wouldn't have got lost.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 3, why: "Both cause and result are unreal past." },
+        { q: "If I had taken that internship, I'd have more experience now.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 4, why: "Past cause → present result." },
+        { q: "If he were more careful, he wouldn't have broken the screen yesterday.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 4, why: "Present/general characteristic → past result." },
+        { q: "If the bus is late tomorrow, we'll take a taxi.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 1, why: "The speaker treats the future situation as a genuine possibility." },
+        { q: "If I were you, I wouldn't send that message.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 2, why: "Classic hypothetical advice." }
+      ],
+      contrast: [
+        { q: "You think there is a realistic chance your team will win tonight.", options: ["If we win, we'll celebrate.", "If we won, we'd celebrate."], a: 0, why: "Use first conditional when you frame the future outcome as open / realistic." },
+        { q: "Your friend asks what you would do with €1 million. You are only imagining it.", options: ["If I win €1 million, I'll travel for a year.", "If I won €1 million, I'd travel for a year."], a: 1, why: "This is a hypothetical thought experiment → second conditional." },
+        { q: "You are applying to a university and genuinely expect a decision next week.", options: ["If they accept me, I'll look for accommodation.", "If they accepted me, I'd look for accommodation."], a: 0, why: "The situation is presented as a real future possibility." },
+        { q: "You are not a professional athlete; imagine the situation.", options: ["If I become a professional athlete, I'll train twice a day.", "If I became a professional athlete, I'd train twice a day."], a: 1, why: "Remote / imagined situation → second conditional." }
+      ],
+      mixed: [
+        { q: "I didn't learn to drive when I was younger, so I can't drive now.", options: ["If I learned to drive, I could drive now.", "If I had learned to drive, I could drive now.", "If I had learned to drive, I could have driven now."], a: 1, why: "Past cause → present result: past perfect + could/would + infinitive." },
+        { q: "He is careless in general. That's why he lost his passport last week.", options: ["If he had been more careful, he wouldn't lose it.", "If he were more careful, he wouldn't have lost it.", "If he was more careful, he wouldn't lose it last week."], a: 1, why: "Present characteristic → past result: past simple + would have + V3." },
+        { q: "We missed the train this morning; now we're still waiting at the station.", options: ["If we hadn't missed the train, we wouldn't be waiting here now.", "If we didn't miss the train, we wouldn't wait here now.", "If we hadn't missed the train, we wouldn't have waited here now."], a: 0, why: "Past event causes a present situation." },
+        { q: "I am not good at saving money, so I didn't have enough for the trip last month.", options: ["If I were better at saving, I would have had enough money.", "If I had been better at saving, I would have enough money last month.", "If I am better at saving, I would have had enough money."], a: 0, why: "A present/general trait explains a past outcome." }
+      ],
+      errors: [
+        { q: "If I will see Anna tomorrow, I'll tell her.", options: ["If I see Anna tomorrow, I'll tell her.", "If I saw Anna tomorrow, I'll tell her.", "If I would see Anna tomorrow, I'll tell her."], a: 0, why: "Standard first conditional: present after if." },
+        { q: "If I would have more time, I would join you.", options: ["If I had more time, I would join you.", "If I have more time, I would join you.", "If I had had more time, I would join you."], a: 0, why: "Second conditional uses past form in the if-clause." },
+        { q: "If she had studied more, she would pass the exam last year.", options: ["…she would have passed the exam last year.", "…she will have passed the exam last year.", "…she would passed the exam last year."], a: 0, why: "Unreal past result needs would have + V3." },
+        { q: "Unless you don't leave now, you'll miss the train.", options: ["Unless you leave now, you'll miss the train.", "Unless you won't leave now, you'll miss the train.", "Unless you didn't leave now, you'll miss the train."], a: 0, why: "Unless already contains the negative meaning ‘if not’." },
+        { q: "If I was you, I would apologise.", options: ["If I were you, I would apologise.", "If I am you, I would apologise.", "If I had been you, I would apologise."], a: 0, why: "‘If I were you’ is the safest standard form for hypothetical advice." },
+        { q: "If he had taken the medicine, he would feel better yesterday.", options: ["…he would have felt better yesterday.", "…he will feel better yesterday.", "…he would felt better yesterday."], a: 0, why: "Past condition + past result → third conditional." }
+      ],
+      final: [
+        { q: "When I feel stressed, I usually go for a walk.", options: ["Zero", "First", "Second", "Third", "Mixed"], a: 0, why: "Habit / regular result." },
+        { q: "If the weather improves tomorrow, we ___ outside.", options: ["eat", "will eat", "would eat", "would have eaten"], a: 1, why: "Real future possibility → first conditional." },
+        { q: "If I ___ more confident, I'd apply for the position.", options: ["am", "were", "had been", "will be"], a: 1, why: "Unreal current state → second conditional." },
+        { q: "If they had left ten minutes earlier, they ___ the traffic.", options: ["avoid", "would avoid", "would have avoided", "will avoid"], a: 2, why: "Unreal past → third conditional." },
+        { q: "I didn't take the course, so I don't know how to code now.", options: ["If I took the course, I'd know how to code now.", "If I had taken the course, I'd know how to code now.", "If I had taken the course, I'd have known how to code now."], a: 1, why: "Past cause → present result." },
+        { q: "Which sentence presents the result as MORE hypothetical?", options: ["If I get the scholarship, I'll study abroad.", "If I got the scholarship, I'd study abroad."], a: 1, why: "Second conditional makes the situation more remote / hypothetical." },
+        { q: "Choose the correct sentence.", options: ["If I would know, I would tell you.", "If I knew, I would tell you.", "If I had known, I would tell you yesterday."], a: 1, why: "Standard second conditional." },
+        { q: "You missed a deadline yesterday because you are generally disorganised.", options: ["If I were more organised, I wouldn't have missed it.", "If I had been more organised, I wouldn't miss it yesterday.", "If I am more organised, I wouldn't have missed it."], a: 0, why: "Present/general condition → past result." },
+        { q: "Unless you ___ now, you won't catch the bus.", options: ["leave", "don't leave", "will leave", "would leave"], a: 0, why: "Unless = if not; present form in the subordinate clause." },
+        { q: "Which is the safest exam form for hypothetical advice?", options: ["If I was you…", "If I were you…", "If I would be you…"], a: 1, why: "‘If I were you’ is standard irrealis usage." },
+        { q: "If she hadn't ignored the warning, she ___ in this situation now.", options: ["wouldn't be", "wouldn't have been", "won't be", "isn't"], a: 0, why: "Past cause → present result = mixed conditional." },
+        { q: "Which sentence is third conditional?", options: ["If I have time, I'll call.", "If I had time, I'd call.", "If I had had time, I'd have called."], a: 2, why: "Past perfect + would have + V3." }
+      ]
+    };
+
+    const gapData = [
+      { q: "If water reaches 0°C, it ___ (freeze).", answers: ["freezes"], why: "General fact → zero conditional." },
+      { q: "If I ___ (finish) before six, I'll message you.", answers: ["finish"], why: "First conditional → present after if." },
+      { q: "If I were more patient, I ___ (not/get) so annoyed.", answers: ["wouldn't get", "would not get"], why: "Second conditional → would + infinitive." },
+      { q: "If she ___ (know) the answer, she would tell us.", answers: ["knew"], why: "Hypothetical present → past simple." },
+      { q: "If we had booked earlier, we ___ (pay) less.", answers: ["would have paid", "we'd have paid"], why: "Third conditional result → would have + V3." },
+      { q: "If he ___ (not/forget) his password, he would have logged in.", answers: ["hadn't forgotten", "had not forgotten"], why: "Third conditional if-clause → past perfect." },
+      { q: "If I had listened to you, I ___ (not/be) in trouble now.", answers: ["wouldn't be", "would not be"], why: "Past cause → present result." },
+      { q: "If she were less shy, she ___ (speak) at the conference yesterday.", answers: ["would have spoken", "she'd have spoken"], why: "Present state → past result." },
+      { q: "Unless you ___ (save) the file, you may lose your changes.", answers: ["save"], why: "Unless = if not; present form." },
+      { q: "If I ___ (be) you, I'd check the instructions again.", answers: ["were"], why: "Standard hypothetical advice: If I were you." }
+    ];
+
+    function normalise(s) {
+      return s.toLowerCase().trim().replace(/[’]/g, "'").replace(/\s+/g, " ").replace(/[.,!?]$/g, "");
+    }
+
+    function renderChoiceQuiz(targetId, data, group) {
+      const target = document.getElementById(targetId);
+      target.innerHTML = data.map((item, i) => `
+        <div class="q-card" data-group="${group}" data-index="${i}">
+          <div class="q-top"><div class="q-number">${i+1}</div><div class="q-text">${item.q}</div></div>
+          <div class="options">
+            ${item.options.map((o, oi) => `<button class="option" data-option="${oi}" onclick="chooseOption(this, '${group}', ${i}, ${oi})">${o}</button>`).join('')}
+          </div>
+          <div class="feedback"><strong></strong> <span></span></div>
+        </div>`).join('');
+    }
+
+    function renderGapQuiz() {
+      const target = document.getElementById('gapQuiz');
+      target.innerHTML = gapData.map((item, i) => `
+        <div class="q-card" data-group="gap" data-index="${i}">
+          <div class="q-top"><div class="q-number">${i+1}</div><div class="q-text">${item.q}</div></div>
+          <div class="input-row">
+            <input class="text-input" id="gap-${i}" autocomplete="off" placeholder="Type the missing form…" onkeydown="if(event.key==='Enter') checkGap(${i})" />
+            <button class="mini-btn" onclick="checkGap(${i})">Check</button>
+          </div>
+          <div class="feedback"><strong></strong> <span></span></div>
+        </div>`).join('');
+    }
+
+    const state = { diagnostic:{}, contrast:{}, mixed:{}, errors:{}, final:{}, gap:{} };
+
+    function chooseOption(btn, group, index, selected) {
+      const item = quizData[group][index];
+      const card = btn.closest('.q-card');
+      const opts = [...card.querySelectorAll('.option')];
+      const feedback = card.querySelector('.feedback');
+      opts.forEach((o, oi) => {
+        o.classList.remove('selected','right','wrong');
+        if (oi === item.a) o.classList.add('right');
+      });
+      btn.classList.add('selected');
+      if (selected !== item.a) btn.classList.add('wrong');
+      const ok = selected === item.a;
+      card.classList.toggle('correct', ok);
+      card.classList.toggle('incorrect', !ok);
+      feedback.querySelector('strong').textContent = ok ? 'Correct.' : 'Not quite.';
+      feedback.querySelector('span').textContent = item.why;
+      feedback.classList.add('show');
+      state[group][index] = { selected, ok };
+      updateScores();
+      saveState();
+    }
+
+    function checkGap(index) {
+      const item = gapData[index];
+      const input = document.getElementById(`gap-${index}`);
+      const card = input.closest('.q-card');
+      const feedback = card.querySelector('.feedback');
+      const val = normalise(input.value);
+      const ok = item.answers.map(normalise).includes(val);
+      card.classList.toggle('correct', ok);
+      card.classList.toggle('incorrect', !ok);
+      feedback.querySelector('strong').textContent = ok ? 'Correct.' : 'Try again.';
+      feedback.querySelector('span').textContent = ok ? item.why : `Expected: ${item.answers[0]}. ${item.why}`;
+      feedback.classList.add('show');
+      state.gap[index] = { value: input.value, ok };
+      updateScores();
+      saveState();
+    }
+
+    function score(group, total) {
+      const count = Object.values(state[group]).filter(v => v && v.ok).length;
+      const attempted = Object.keys(state[group]).length;
+      return { count, attempted, total };
+    }
+
+    function updateScores() {
+      const d = score('diagnostic', 8);
+      const g = score('gap', 10);
+      const f = score('final', 12);
+      document.getElementById('diagScore').textContent = `${d.count}/8`;
+      document.getElementById('gapScore').textContent = `${g.count}/10`;
+      document.getElementById('finalScore').textContent = `${f.count}/12`;
+      const msg = document.getElementById('finalMessage');
+      if (f.attempted < 12) {
+        msg.textContent = `${f.attempted}/12 answered. Keep going.`;
+      } else if (f.count >= 11) {
+        msg.textContent = 'Excellent control. Your next step is nuance and fluent production.';
+      } else if (f.count >= 9) {
+        msg.textContent = 'Strong. Recheck the items you missed and explain the time/reality contrast aloud.';
+      } else if (f.count >= 7) {
+        msg.textContent = 'Core understanding is there, but forms are not fully automatic yet. Repeat sections 04–07.';
+      } else {
+        msg.textContent = 'Return to the five-card map and identify meaning before form. Then retake the challenge.';
+      }
+    }
+
+    function resetQuiz(group) {
+      state[group] = {};
+      document.querySelectorAll(`[data-group="${group}"]`).forEach(card => {
+        card.classList.remove('correct','incorrect');
+        card.querySelectorAll('.option').forEach(o => o.classList.remove('selected','right','wrong'));
+        const f = card.querySelector('.feedback');
+        if (f) f.classList.remove('show');
+        const input = card.querySelector('input');
+        if (input) input.value = '';
+      });
+      updateScores();
+      saveState();
+    }
+
+    function toggleReveal(btn) {
+      const r = btn.nextElementSibling;
+      r.classList.toggle('show');
+      btn.textContent = r.classList.contains('show') ? 'Hide language support' : 'Reveal language support';
+    }
+
+    function saveState() {
+      try { localStorage.setItem('conditionals4A4', JSON.stringify(state)); } catch(e) {}
+    }
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('conditionals4A4') || '{}');
+        Object.keys(state).forEach(k => state[k] = saved[k] || {});
+      } catch(e) {}
+    }
+
+    function restoreVisualState() {
+      Object.entries(state).forEach(([group, answers]) => {
+        Object.entries(answers).forEach(([idx, saved]) => {
+          if (!saved) return;
+          if (group === 'gap') {
+            const input = document.getElementById(`gap-${idx}`);
+            if (input && typeof saved.value === 'string') {
+              input.value = saved.value;
+              checkGap(Number(idx));
+            }
+            return;
+          }
+          const card = document.querySelector(`[data-group="${group}"][data-index="${idx}"]`);
+          if (!card || typeof saved.selected !== 'number') return;
+          const btn = card.querySelector(`.option[data-option="${saved.selected}"]`);
+          if (btn) chooseOption(btn, group, Number(idx), saved.selected);
+        });
+      });
+      updateScores();
+    }
+
+    renderChoiceQuiz('diagnosticQuiz', quizData.diagnostic, 'diagnostic');
+    renderChoiceQuiz('contrastQuiz', quizData.contrast, 'contrast');
+    renderGapQuiz();
+    renderChoiceQuiz('mixedQuiz', quizData.mixed, 'mixed');
+    renderChoiceQuiz('errorQuiz', quizData.errors, 'errors');
+    renderChoiceQuiz('finalQuiz', quizData.final, 'final');
+    loadState();
+    restoreVisualState();
+
+    window.addEventListener('scroll', () => {
+      const el = document.documentElement;
+      const scrolled = el.scrollTop / Math.max(1, el.scrollHeight - el.clientHeight);
+      document.getElementById('pageProgress').style.width = `${Math.min(100, scrolled*100)}%`;
+    }, { passive: true });
+
+    document.getElementById('teacherBtn').addEventListener('click', () => {
+      document.body.classList.toggle('teacher');
+    });
+
+    document.getElementById('projectorBtn').addEventListener('click', async () => {
+      document.body.classList.toggle('projector');
+      if (!document.fullscreenElement) {
+        try { await document.documentElement.requestFullscreen(); } catch(e) {}
+      } else {
+        try { await document.exitFullscreen(); } catch(e) {}
+      }
+    });
+
+    const menuBtn = document.getElementById('menuBtn');
+    const jumpMenu = document.getElementById('jumpMenu');
+    menuBtn.addEventListener('click', () => jumpMenu.classList.toggle('show'));
+    jumpMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => jumpMenu.classList.remove('show')));
+
+    document.addEventListener('keydown', (e) => {
+      if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+      if (e.key.toLowerCase() === 't') document.body.classList.toggle('teacher');
+      if (e.key.toLowerCase() === 'p') document.getElementById('projectorBtn').click();
+      if (e.key === 'Escape') jumpMenu.classList.remove('show');
+    });
+  </script>
+</body>
+</html>

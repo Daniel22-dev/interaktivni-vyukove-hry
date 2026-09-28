@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Appearance Lexicon Lab — Interactive</title>
+<style>
+:root{
+  --bg:#07111f;--panel:#0f1d31;--panel2:#13263e;--line:#28415f;--text:#f7f9fc;--muted:#9fb0c7;
+  --accent:#67e8f9;--accent2:#a78bfa;--good:#34d399;--bad:#fb7185;--warn:#fbbf24;
+  --shadow:0 24px 70px rgba(0,0,0,.35)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
+  background:
+    radial-gradient(circle at 12% 0%,rgba(103,232,249,.13),transparent 28rem),
+    radial-gradient(circle at 90% 0%,rgba(167,139,250,.16),transparent 30rem),
+    linear-gradient(155deg,#06101c,#09192c 58%,#07111f);
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,calc(100% - 24px));margin:auto;padding:22px 0 48px}
+.top{display:flex;gap:16px;justify-content:space-between;align-items:center;margin-bottom:16px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#c4b5fd);color:#06111f;font-weight:950}
+.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.73rem;color:var(--accent);font-weight:850}
+h1,h2,h3,p{margin-top:0}
+.hero,.panel{border:1px solid var(--line);background:linear-gradient(145deg,rgba(15,29,49,.95),rgba(8,22,38,.95));box-shadow:var(--shadow)}
+.hero{border-radius:27px;padding:clamp(22px,4vw,40px)}
+.hero h1{font-size:clamp(2rem,6vw,4.6rem);line-height:.96;letter-spacing:-.045em;margin:14px 0}
+.hero p{max-width:850px;color:var(--muted);line-height:1.7;font-size:1.06rem}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.meta>div{border:1px solid var(--line);background:rgba(9,24,42,.68);border-radius:15px;padding:13px}
+.meta small{display:block;color:var(--muted);margin-bottom:4px}
+.panel{border-radius:23px;margin-top:16px;padding:20px}
+.nav{display:flex;flex-wrap:wrap;gap:8px}
+.nav button,.btn,.chip,.option,.word,.cat{
+  border:1px solid var(--line);background:#13263e;color:var(--text);border-radius:12px
+}
+.nav button{padding:9px 12px;font-weight:800}
+.nav button.active{border-color:var(--accent);color:var(--accent);background:#0b1e31}
+.progress{height:8px;border-radius:999px;overflow:hidden;background:#1a2e46;margin-top:14px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:.25s}
+.stage{display:none}
+.stage.active{display:block}
+.stage-head{display:flex;gap:14px;justify-content:space-between;align-items:flex-start;margin-bottom:15px}
+.stage h2{margin:0;font-size:clamp(1.35rem,3vw,2rem)}
+.stage .sub{color:var(--muted);line-height:1.55;margin-top:5px}
+.score{white-space:nowrap;color:var(--muted)}
+.card{border:1px solid var(--line);background:#0d1c30;border-radius:18px;padding:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.word-bank,.pool{display:flex;flex-wrap:wrap;gap:8px}
+.word,.chip,.cat{padding:9px 11px;font-weight:800}
+.word{cursor:pointer}
+.word.selected{outline:2px solid var(--accent);color:var(--accent)}
+.match-row{display:grid;grid-template-columns:1.3fr .7fr;gap:10px;align-items:center;margin-top:9px}
+.drop{
+  min-height:46px;border:1px dashed #4b6a8f;border-radius:12px;padding:10px;background:#09182a;color:var(--muted);
+  display:flex;align-items:center
+}
+.drop.filled{border-style:solid;color:var(--text)}
+.drop.good{border-color:var(--good);background:rgba(52,211,153,.08)}
+.drop.bad{border-color:var(--bad);background:rgba(251,113,133,.08)}
+.help{color:var(--muted);font-size:.88rem;line-height:1.55}
+.btn{padding:10px 14px;font-weight:850}
+.btn.primary{border:0;color:#06111f;background:linear-gradient(135deg,var(--accent),#c4b5fd)}
+.btn.good{border-color:var(--good)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.feedback{display:none;margin-top:12px;padding:12px;border-radius:12px;background:#09182a;border:1px solid var(--line);line-height:1.55}
+.feedback.good{display:block;border-color:rgba(52,211,153,.6)}
+.feedback.bad{display:block;border-color:rgba(251,113,133,.6)}
+.builder{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.builder select,.typebox{
+  background:#09182a;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 11px;font-size:16px
+}
+.typebox{width:100%}
+.sentence{font-size:1.08rem;line-height:1.6}
+.option{display:block;width:100%;padding:12px 13px;text-align:left;margin-top:8px;font-weight:750}
+.option.correct{border-color:var(--good);background:rgba(52,211,153,.1)}
+.option.wrong{border-color:var(--bad);background:rgba(251,113,133,.1)}
+.entry{font-family:Georgia,serif;background:#09182a;border-left:4px solid var(--accent2);padding:13px 14px;border-radius:0 12px 12px 0;line-height:1.55}
+.sort-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.sort-col{border:1px solid var(--line);border-radius:16px;padding:12px;background:#0a192a;min-height:180px}
+.sort-col h3{font-size:1rem;margin-bottom:9px}
+.sort-col .cat{display:block;margin:7px 0}
+.sort-item{
+  display:inline-block;margin:5px 6px 0 0;padding:8px 10px;border:1px solid var(--line);background:#13263e;border-radius:10px;font-weight:800;cursor:pointer
+}
+.sort-item.selected{outline:2px solid var(--accent)}
+.sort-item.placed{background:#0f2238}
+textarea{width:100%;min-height:105px;resize:vertical;background:#09182a;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:11px;font-size:16px;line-height:1.5}
+.model{display:none;margin-top:9px;color:#dce6f2;padding:10px;border-radius:10px;background:#09182a;line-height:1.5}
+.final{display:none}
+.final.show{display:block}
+.big{font-size:clamp(3.2rem,9vw,6.5rem);font-weight:950;letter-spacing:-.06em;line-height:1}
+.note{color:var(--muted);line-height:1.65}
+@media(max-width:850px){.meta,.grid3,.sort-grid{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:620px){
+  .wrap{width:min(100% - 16px,1180px)}
+  .meta,.grid3,.sort-grid{grid-template-columns:1fr}
+  .match-row{grid-template-columns:1fr}
+  .stage-head,.top{align-items:flex-start}
+  .score{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo">AL</div>
+      <div>
+        <div class="eyebrow">Lexical Week</div>
+        <strong>Appearance Lexicon Lab</strong>
+      </div>
+    </div>
+    <div class="help">Single-file HTML · offline</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Beyond multiple choice</div>
+    <h1>Know the word.<br>Build the phrase.<br>Use it.</h1>
+    <p>This lab tests meaning, collocation, lexical grammar, dictionary skills, register and active production. Most tasks require doing something with the language — matching, building, typing, correcting, sorting or explaining.</p>
+    <div class="meta">
+      <div><small>Target level</small><strong>B1 → B1+</strong></div>
+      <div><small>Year group</small><strong>1st year, 4-year gymnázium</strong></div>
+      <div><small>Objective</small><strong>lexical depth & accurate use</strong></div>
+      <div><small>Time</small><strong>30–40 min</strong></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <nav class="nav" id="nav"></nav>
+    <div class="progress"><span id="bar"></span></div>
+  </section>
+
+  <section class="panel stage active" data-stage="0">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 1</div>
+        <h2>Definition Match</h2>
+        <div class="sub">Match the English definition to the correct word. Click a word, then click a definition box.</div>
+      </div>
+      <div class="score">5 points</div>
+    </div>
+    <div class="card">
+      <div class="word-bank" id="matchWords"></div>
+      <div id="matchRows"></div>
+      <div class="actions"><button class="btn primary" id="checkMatch">Check matches</button></div>
+      <div class="feedback" id="matchFeedback"></div>
+    </div>
+  </section>
+
+  <section class="panel stage" data-stage="1">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 2</div>
+        <h2>Collocation Builder</h2>
+        <div class="sub">Build natural combinations. You are testing what words normally go together.</div>
+      </div>
+      <div class="score">5 points</div>
+    </div>
+    <div class="card" id="collocationArea"></div>
+  </section>
+
+  <section class="panel stage" data-stage="2">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 3</div>
+        <h2>Type the Pattern</h2>
+        <div class="sub">No options. Type the missing word or phrase.</div>
+      </div>
+      <div class="score">5 points</div>
+    </div>
+    <div class="card" id="typeArea"></div>
+  </section>
+
+  <section class="panel stage" data-stage="3">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 4</div>
+        <h2>Dictionary Detective</h2>
+        <div class="sub">Use dictionary-style information: register, BrE/AmE and connotation.</div>
+      </div>
+      <div class="score">4 points</div>
+    </div>
+    <div class="card" id="dictArea"></div>
+  </section>
+
+  <section class="panel stage" data-stage="4">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 5</div>
+        <h2>Fix the Sentence</h2>
+        <div class="sub">Rewrite each sentence correctly. Focus on collocation and verb patterns.</div>
+      </div>
+      <div class="score">4 points</div>
+    </div>
+    <div class="card" id="fixArea"></div>
+  </section>
+
+  <section class="panel stage" data-stage="5">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 6</div>
+        <h2>Sort by Meaning & Register</h2>
+        <div class="sub">Place each item into the best category. Click an item, then a category.</div>
+      </div>
+      <div class="score">6 points</div>
+    </div>
+    <div class="card">
+      <div class="pool" id="sortPool"></div>
+      <div class="sort-grid" id="sortGrid"></div>
+      <div class="actions"><button class="btn primary" id="checkSort">Check sorting</button></div>
+      <div class="feedback" id="sortFeedback"></div>
+    </div>
+  </section>
+
+  <section class="panel stage" data-stage="6">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow">Station 7</div>
+        <h2>Explain It in English</h2>
+        <div class="sub">The hardest part: explain vocabulary without translating it.</div>
+      </div>
+      <div class="score">self-check</div>
+    </div>
+    <div class="grid3" id="explainArea"></div>
+    <div class="actions"><button class="btn primary" id="finishBtn">Finish lab</button></div>
+  </section>
+
+  <section class="panel final" id="final">
+    <div class="eyebrow">Result</div>
+    <div class="grid2">
+      <div>
+        <div class="big" id="finalScore">0/29</div>
+        <h2 id="finalMessage"></h2>
+        <p class="note" id="finalNote"></p>
+      </div>
+      <div class="card">
+        <h3>What this result means</h3>
+        <p class="note">The score is based on active lexical knowledge: definitions, collocations, patterns, dictionary information, sentence correction and register. The final explanation task is deliberately self-assessed because several good definitions are possible.</p>
+      </div>
+    </div>
+    <div class="actions"><button class="btn primary" id="restart">Restart</button></div>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">Differentiation</div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="card"><strong>Weaker students</strong><p class="note" style="margin:8px 0 0">Work in pairs. Allow a paper/online dictionary after Station 2. Students must still explain why they chose an answer in English.</p></div>
+      <div class="card"><strong>Stronger students</strong><p class="note" style="margin:8px 0 0">No dictionary until Station 4. After each station, require one original sentence using a target item naturally.</p></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const stageNames=["Definitions","Collocations","Patterns","Dictionary","Corrections","Register","Explain"];
+  const stageEls=[...document.querySelectorAll(".stage")];
+  const nav=document.getElementById("nav");
+  const bar=document.getElementById("bar");
+  let current=0, totalScore=0;
+  const awarded={match:false,coll:false,type:false,dict:false,fix:false,sort:false};
+
+  stageNames.forEach((n,i)=>{
+    const b=document.createElement("button");
+    b.type="button"; b.textContent=`${i+1}. ${n}`;
+    b.addEventListener("click",()=>showStage(i));
+    nav.appendChild(b);
+  });
+
+  function showStage(i){
+    current=i;
+    stageEls.forEach((s,idx)=>s.classList.toggle("active",idx===i));
+    [...nav.children].forEach((b,idx)=>b.classList.toggle("active",idx===i));
+    bar.style.width=`${(i/(stageEls.length-1))*100}%`;
+    window.scrollTo({top:document.querySelector(".panel.stage.active").offsetTop-12,behavior:"smooth"});
+  }
+  showStage(0);
+
+  function norm(s){return s.toLowerCase().trim().replace(/[.,!?]/g,"").replace(/\s+/g," ")}
+  function escape(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+  function nextButton(stageIndex){
+    const b=document.createElement("button"); b.className="btn"; b.type="button"; b.textContent="Next station →";
+    b.addEventListener("click",()=>showStage(Math.min(stageIndex+1,6))); return b;
+  }
+
+  // 1 MATCHING
+  const matchData=[
+    ["skinny","very thin, often with a slightly negative meaning"],
+    ["wrinkled","having many small lines in the skin"],
+    ["gap-toothed","having a noticeable space between two teeth"],
+    ["middle-aged","neither young nor old; in the middle period of adult life"],
+    ["muscular","having clearly developed muscles"]
+  ];
+  const matchWords=document.getElementById("matchWords"), matchRows=document.getElementById("matchRows");
+  let selectedWord=null, matchAssignments={};
+  [...matchData].sort(()=>Math.random()-.5).forEach(([w])=>{
+    const b=document.createElement("button"); b.className="word"; b.type="button"; b.textContent=w;
+    b.addEventListener("click",()=>{[...matchWords.children].forEach(x=>x.classList.remove("selected"));b.classList.add("selected");selectedWord=w});
+    matchWords.appendChild(b);
+  });
+  matchData.forEach(([w,d],i)=>{
+    const row=document.createElement("div"); row.className="match-row";
+    row.innerHTML=`<div class="help">${escape(d)}</div><button type="button" class="drop" data-i="${i}">Click here after selecting a word</button>`;
+    row.querySelector(".drop").addEventListener("click",e=>{
+      if(!selectedWord)return;
+      matchAssignments[i]=selectedWord;
+      e.currentTarget.textContent=selectedWord;e.currentTarget.classList.add("filled");
+    });
+    matchRows.appendChild(row);
+  });
+  document.getElementById("checkMatch").addEventListener("click",()=>{
+    let pts=0;
+    [...matchRows.querySelectorAll(".drop")].forEach((d,i)=>{
+      const good=matchAssignments[i]===matchData[i][0]; d.classList.add(good?"good":"bad"); if(good)pts++;
+    });
+    if(!awarded.match){totalScore+=pts;awarded.match=true}
+    const f=document.getElementById("matchFeedback");f.className=`feedback ${pts===5?"good":"bad"}`;f.innerHTML=`<strong>${pts}/5</strong> correct. ${pts<5?"Review the definitions and try to explain the differences aloud.":"Excellent — all meanings are secure."}`;
+    if(!f.querySelector("button"))f.appendChild(nextButton(0));
+  });
+
+  // 2 COLLOCATIONS
+  const collData=[
+    ["rosy","cheeks"],["bushy","eyebrows"],["button","nose"],["square","face"],["curly brown","hair"]
+  ];
+  const collArea=document.getElementById("collocationArea");
+  collData.forEach(([a,b],i)=>{
+    const options=i===0?["cheeks","eyes","hair"]:i===1?["eyebrows","nose","face"]:i===2?["nose","chin","hair"]:i===3?["face","hair","eyes"]:["hair","face","cheeks"];
+    const row=document.createElement("div");row.className="builder";
+    row.innerHTML=`<strong style="min-width:120px">${escape(a)}</strong><select data-i="${i}"><option value="">Choose…</option>${options.map(x=>`<option>${escape(x)}</option>`).join("")}</select><span class="help" id="collMark${i}"></span>`;
+    collArea.appendChild(row);
+  });
+  const collActions=document.createElement("div");collActions.className="actions";collActions.innerHTML=`<button type="button" class="btn primary" id="checkColl">Check collocations</button>`;collArea.appendChild(collActions);
+  const collFb=document.createElement("div");collFb.className="feedback";collFb.id="collFb";collArea.appendChild(collFb);
+  document.getElementById("checkColl").addEventListener("click",()=>{
+    let pts=0;collData.forEach(([a,b],i)=>{const s=collArea.querySelector(`select[data-i="${i}"]`);const ok=s.value===b;document.getElementById(`collMark${i}`).textContent=ok?"✓":"✗";document.getElementById(`collMark${i}`).style.color=ok?"var(--good)":"var(--bad)";if(ok)pts++});
+    if(!awarded.coll){totalScore+=pts;awarded.coll=true}
+    collFb.className=`feedback ${pts===5?"good":"bad"}`;collFb.innerHTML=`<strong>${pts}/5</strong> natural collocations. ${pts<5?"Remember: knowing a word includes knowing what it normally combines with.":"Perfect collocational control."}`;
+    collFb.appendChild(nextButton(1));
+  });
+
+  // 3 TYPING PATTERNS
+  const typeData=[
+    ["My grandfather ___ grey quite early.","went",["went"]],
+    ["He ___ bald when he was thirty-two.","went",["went"]],
+    ["Rebecca ___ long, wavy red hair.","has",["has"]],
+    ["My uncle ___ to be slim.","used",["used"]],
+    ["She ___ green eyes.","has",["has"]]
+  ];
+  const typeArea=document.getElementById("typeArea");
+  typeData.forEach(([s,a,alts],i)=>{
+    const d=document.createElement("div");d.className="card";d.style.marginBottom="10px";
+    d.innerHTML=`<div class="sentence">${escape(s)}</div><input class="typebox" data-i="${i}" autocomplete="off" placeholder="Type the missing word…"><div class="help" id="typeHint${i}" style="margin-top:6px"></div>`;
+    typeArea.appendChild(d);
+  });
+  const ta=document.createElement("div");ta.className="actions";ta.innerHTML=`<button type="button" class="btn primary" id="checkType">Check answers</button>`;typeArea.appendChild(ta);
+  const tf=document.createElement("div");tf.className="feedback";tf.id="typeFb";typeArea.appendChild(tf);
+  document.getElementById("checkType").addEventListener("click",()=>{
+    let pts=0;typeData.forEach(([s,a,alts],i)=>{const inp=typeArea.querySelector(`input[data-i="${i}"]`);const ok=alts.map(norm).includes(norm(inp.value));inp.style.borderColor=ok?"var(--good)":"var(--bad)";document.getElementById(`typeHint${i}`).textContent=ok?"Correct":`Target: ${a}`;if(ok)pts++});
+    if(!awarded.type){totalScore+=pts;awarded.type=true}
+    tf.className=`feedback ${pts===5?"good":"bad"}`;tf.innerHTML=`<strong>${pts}/5</strong>. Key patterns: <em>go grey, go bald, have + feature, used to + infinitive</em>.`;tf.appendChild(nextButton(2));
+  });
+
+  // 4 DICTIONARY
+  const dictData=[
+    {entry:"grey adjective BrE · gray AmE",q:"You are writing for an American audience.",opts:["grey","gray","greye"],a:1,why:"American English normally uses gray."},
+    {entry:"colour noun BrE · color AmE",q:"Choose the American spelling.",opts:["colour","color","collor"],a:1,why:"American English uses color."},
+    {entry:"hooter noun BrE informal · a person's nose",q:"Which description of the word is correct?",opts:["formal medical term","neutral international word","informal British slang"],a:2,why:"The register label says BrE informal."},
+    {entry:"skinny adjective · very thin, often disapproving",q:"Which sentence best reflects the connotation?",opts:["She looks slim and healthy.","He looks too skinny.","Skinny is always a compliment."],a:1,why:"Skinny can suggest that somebody is too thin."}
+  ];
+  const dictArea=document.getElementById("dictArea"); let dictAnswers={};
+  dictData.forEach((x,i)=>{
+    const box=document.createElement("div");box.className="card";box.style.marginBottom="12px";
+    box.innerHTML=`<div class="entry">${escape(x.entry)}</div><p style="margin:12px 0 6px"><strong>${escape(x.q)}</strong></p><div id="dictOpts${i}"></div><div class="help" id="dictWhy${i}" style="margin-top:7px"></div>`;
+    x.opts.forEach((o,j)=>{const b=document.createElement("button");b.type="button";b.className="option";b.textContent=o;b.addEventListener("click",()=>{dictAnswers[i]=j;[...box.querySelectorAll(".option")].forEach(z=>z.style.outline="");b.style.outline="2px solid var(--accent)"});box.querySelector(`#dictOpts${i}`).appendChild(b)});
+    dictArea.appendChild(box);
+  });
+  const da=document.createElement("div");da.className="actions";da.innerHTML=`<button type="button" class="btn primary" id="checkDict">Check dictionary work</button>`;dictArea.appendChild(da);
+  const df=document.createElement("div");df.className="feedback";df.id="dictFb";dictArea.appendChild(df);
+  document.getElementById("checkDict").addEventListener("click",()=>{
+    let pts=0;dictData.forEach((x,i)=>{const opts=dictArea.querySelectorAll(`#dictOpts${i} .option`);opts.forEach((b,j)=>{if(j===x.a)b.classList.add("correct");if(dictAnswers[i]===j&&j!==x.a)b.classList.add("wrong")});document.getElementById(`dictWhy${i}`).textContent=x.why;if(dictAnswers[i]===x.a)pts++});
+    if(!awarded.dict){totalScore+=pts;awarded.dict=true}
+    df.className=`feedback ${pts===4?"good":"bad"}`;df.innerHTML=`<strong>${pts}/4</strong>. A dictionary tells you more than meaning: spelling, register and connotation matter too.`;df.appendChild(nextButton(3));
+  });
+
+  // 5 FIX SENTENCE
+  const fixData=[
+    {bad:"She is green eyes.",answers:["she has green eyes","she has green eyes."],model:"She has green eyes."},
+    {bad:"He became to bald at thirty.",answers:["he went bald at thirty","he went bald at thirty."],model:"He went bald at thirty."},
+    {bad:"She has a curly brown hairs.",answers:["she has curly brown hair","she has curly brown hair."],model:"She has curly brown hair."},
+    {bad:"My dad use to be slim.",answers:["my dad used to be slim","my dad used to be slim."],model:"My dad used to be slim."}
+  ];
+  const fixArea=document.getElementById("fixArea");
+  fixData.forEach((x,i)=>{
+    const d=document.createElement("div");d.className="card";d.style.marginBottom="10px";
+    d.innerHTML=`<div class="sentence"><strong>Wrong:</strong> ${escape(x.bad)}</div><input class="typebox" data-i="${i}" placeholder="Rewrite the whole sentence…"><div class="help" id="fixModel${i}" style="margin-top:6px"></div>`;
+    fixArea.appendChild(d);
+  });
+  const fa=document.createElement("div");fa.className="actions";fa.innerHTML=`<button type="button" class="btn primary" id="checkFix">Check corrections</button>`;fixArea.appendChild(fa);
+  const ff=document.createElement("div");ff.className="feedback";ff.id="fixFb";fixArea.appendChild(ff);
+  document.getElementById("checkFix").addEventListener("click",()=>{
+    let pts=0;fixData.forEach((x,i)=>{const inp=fixArea.querySelector(`input[data-i="${i}"]`);const ok=x.answers.map(norm).includes(norm(inp.value));inp.style.borderColor=ok?"var(--good)":"var(--bad)";document.getElementById(`fixModel${i}`).textContent=ok?"Correct":`Model: ${x.model}`;if(ok)pts++});
+    if(!awarded.fix){totalScore+=pts;awarded.fix=true}
+    ff.className=`feedback ${pts===4?"good":"bad"}`;ff.innerHTML=`<strong>${pts}/4</strong>. Correcting language is a strong test of real lexical control.`;ff.appendChild(nextButton(4));
+  });
+
+  // 6 SORTING
+  const sortCats=[
+    {name:"Hair / age change",items:["go grey","go bald"]},
+    {name:"Face / facial feature",items:["button nose","bushy eyebrows"]},
+    {name:"Body shape / build",items:["slim","muscular"]}
+  ];
+  const sortItems=["go grey","go bald","button nose","bushy eyebrows","slim","muscular"].sort(()=>Math.random()-.5);
+  const sortPool=document.getElementById("sortPool"),sortGrid=document.getElementById("sortGrid"); let selectedSort=null, sortPlaced={};
+  sortItems.forEach(x=>{const b=document.createElement("button");b.type="button";b.className="sort-item";b.textContent=x;b.addEventListener("click",()=>{[...document.querySelectorAll(".sort-item")].forEach(z=>z.classList.remove("selected"));b.classList.add("selected");selectedSort=x});sortPool.appendChild(b)});
+  sortCats.forEach((c,i)=>{
+    const col=document.createElement("div");col.className="sort-col";col.innerHTML=`<h3>${escape(c.name)}</h3><button type="button" class="cat">Place selected item here</button><div class="placed" id="placed${i}"></div>`;
+    col.querySelector(".cat").addEventListener("click",()=>{if(!selectedSort)return;sortPlaced[selectedSort]=i;renderPlaced()});
+    sortGrid.appendChild(col);
+  });
+  function renderPlaced(){
+    sortCats.forEach((c,i)=>document.getElementById(`placed${i}`).innerHTML="");
+    Object.entries(sortPlaced).forEach(([item,i])=>{const sp=document.createElement("span");sp.className="sort-item placed";sp.textContent=item;document.getElementById(`placed${i}`).appendChild(sp)});
+  }
+  document.getElementById("checkSort").addEventListener("click",()=>{
+    let pts=0;sortCats.forEach((c,i)=>c.items.forEach(it=>{if(sortPlaced[it]===i)pts++}));
+    if(!awarded.sort){totalScore+=pts;awarded.sort=true}
+    const sf=document.getElementById("sortFeedback");sf.className=`feedback ${pts===6?"good":"bad"}`;sf.innerHTML=`<strong>${pts}/6</strong>. Sorting forces you to organise vocabulary by meaning, not by translation.`;sf.appendChild(nextButton(5));
+  });
+
+  // 7 EXPLAIN
+  const explain=[
+    ["middle-aged","a person who is in the middle period of adult life; neither young nor old"],
+    ["gap-toothed","having a noticeable space between two teeth"],
+    ["bushy eyebrows","eyebrows that are thick and full of hair"]
+  ];
+  const exArea=document.getElementById("explainArea");
+  explain.forEach(([w,m],i)=>{
+    const d=document.createElement("div");d.className="card";d.innerHTML=`<strong>Explain: <span style="color:var(--accent)">${escape(w)}</span></strong><textarea placeholder="Write an English definition + one example sentence…"></textarea><button type="button" class="btn" style="margin-top:9px">Show model</button><div class="model"><strong>Model:</strong> ${escape(m)}.</div>`;
+    d.querySelector("button").addEventListener("click",()=>{d.querySelector(".model").style.display="block"});
+    exArea.appendChild(d);
+  });
+
+  document.getElementById("finishBtn").addEventListener("click",()=>{
+    document.querySelectorAll(".stage").forEach(x=>x.classList.remove("active"));
+    document.getElementById("final").classList.add("show");
+    document.getElementById("finalScore").textContent=`${totalScore}/29`;
+    const pct=Math.round(totalScore/29*100);
+    let msg,note;
+    if(pct>=85){msg="Excellent lexical control.";note="You are not only recognising words — you are using patterns, collocations and dictionary information accurately."}
+    else if(pct>=70){msg="Secure overall.";note="Your vocabulary is mostly active. Review the few weak categories, especially any typed or correction tasks you missed."}
+    else if(pct>=50){msg="Partly secure.";note="You recognise a lot, but some vocabulary is still passive. Revisit collocations and verb patterns before repeating the lab."}
+    else{msg="Rebuild the core first.";note="Focus on English definitions, collocations and the patterns go + adjective / have + feature / used to + infinitive."}
+    document.getElementById("finalMessage").textContent=msg;
+    document.getElementById("finalNote").textContent=note;
+    bar.style.width="100%";
+    window.scrollTo({top:document.getElementById("final").offsetTop-12,behavior:"smooth"});
+  });
+
+  document.getElementById("restart").addEventListener("click",()=>location.reload());
+})();
+</script>
+</body>
+</html>
