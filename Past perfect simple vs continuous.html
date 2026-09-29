@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Interactive lesson: Past Perfect Simple vs Past Perfect Continuous for upper-secondary learners." />
+<title>Past Perfect Masterclass | Simple vs Continuous</title>
+<style>
+  :root{
+    --bg:#08101f;
+    --bg-2:#0c1730;
+    --panel:rgba(17,28,52,.78);
+    --panel-strong:#132343;
+    --line:rgba(255,255,255,.10);
+    --text:#f5f8ff;
+    --muted:#a9b8d6;
+    --cyan:#49d6ff;
+    --mint:#5ee6b9;
+    --amber:#ffc96b;
+    --danger:#ff7b91;
+    --good:#68e6a7;
+    --shadow:0 24px 70px rgba(0,0,0,.28);
+    --radius:22px;
+    --radius-sm:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(73,214,255,.16), transparent 32%),
+      radial-gradient(circle at 85% 18%, rgba(94,230,185,.12), transparent 28%),
+      radial-gradient(circle at 55% 90%, rgba(255,201,107,.09), transparent 30%),
+      linear-gradient(180deg,var(--bg),#091326 60%,#08101f);
+    color:var(--text);
+    min-height:100vh;
+  }
+  button,input{font:inherit}
+  button{cursor:pointer}
+  a{color:var(--cyan)}
+  .app{max-width:1180px;margin:0 auto;padding:18px 18px 90px}
+  .topbar{
+    position:sticky;top:10px;z-index:30;
+    display:flex;align-items:center;gap:14px;
+    padding:12px 14px;
+    background:rgba(8,16,31,.78);backdrop-filter:blur(18px);
+    border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:max-content}
+  .brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--mint));display:grid;place-items:center;color:#05202a;font-weight:900;box-shadow:0 0 32px rgba(73,214,255,.25)}
+  .brand b{font-size:.95rem}.brand small{display:block;color:var(--muted);font-size:.72rem;margin-top:1px}
+  .progress-wrap{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+  .progress{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--mint));transition:width .35s ease}
+  .top-actions{display:flex;gap:8px}
+  .icon-btn,.pill-btn{
+    border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);
+    border-radius:12px;padding:9px 12px;font-weight:700
+  }
+  .icon-btn:hover,.pill-btn:hover{background:rgba(255,255,255,.09)}
+  .hero{
+    min-height:70vh;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:34px;padding:74px 10px 48px
+  }
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid rgba(73,214,255,.25);background:rgba(73,214,255,.08);border-radius:999px;color:#bceeff;font-weight:800;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase}
+  h1{font-size:clamp(3rem,7vw,6.7rem);line-height:.88;margin:18px 0 18px;letter-spacing:-.065em;max-width:900px}
+  h1 span{background:linear-gradient(90deg,#fff 0%,#b5eaff 45%,#88f0cd 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{font-size:clamp(1.05rem,2vw,1.28rem);line-height:1.65;color:#c4d0e8;max-width:760px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+  .primary{border:0;border-radius:14px;padding:13px 18px;background:linear-gradient(135deg,var(--cyan),var(--mint));color:#06212a;font-weight:900;box-shadow:0 16px 30px rgba(73,214,255,.14)}
+  .secondary{border:1px solid var(--line);border-radius:14px;padding:13px 18px;background:rgba(255,255,255,.04);color:var(--text);font-weight:800}
+  .hero-card{position:relative;padding:24px;border-radius:28px;background:linear-gradient(180deg,rgba(24,43,78,.82),rgba(13,25,48,.9));border:1px solid rgba(255,255,255,.11);box-shadow:var(--shadow);overflow:hidden}
+  .hero-card:after{content:"";position:absolute;inset:auto -30px -60px auto;width:180px;height:180px;background:radial-gradient(circle,var(--cyan),transparent 68%);opacity:.18}
+  .timeline-demo{margin-top:20px;padding:18px;border-radius:18px;background:rgba(0,0,0,.18);border:1px solid var(--line)}
+  .axis{height:4px;background:rgba(255,255,255,.16);border-radius:9px;position:relative;margin:38px 8px 28px}
+  .axis .past-point{position:absolute;right:18%;top:50%;transform:translate(50%,-50%);width:16px;height:16px;background:var(--amber);border:4px solid #fff2;border-radius:50%;box-shadow:0 0 0 5px rgba(255,201,107,.12)}
+  .axis .event{position:absolute;right:52%;top:50%;transform:translate(50%,-50%);width:12px;height:12px;background:var(--cyan);border-radius:50%}
+  .axis .duration{position:absolute;left:10%;right:19%;top:-16px;height:10px;border-radius:999px;background:linear-gradient(90deg,rgba(94,230,185,.3),var(--mint))}
+  .axis-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem}
+  .mini-legend{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.mini{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);font-size:.88rem;color:#c7d5eb}.mini b{color:#fff}
+
+  .section{padding:58px 0 18px;scroll-margin-top:90px}
+  .section-head{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;margin-bottom:22px}
+  .section h2{font-size:clamp(2rem,4vw,3.6rem);letter-spacing:-.045em;margin:0 0 10px}
+  .section .subtitle{color:var(--muted);max-width:760px;line-height:1.65;margin:0}
+  .step-tag{flex:0 0 auto;padding:9px 11px;border:1px solid var(--line);border-radius:12px;color:#c5d4ef;font-weight:800;font-size:.78rem;background:rgba(255,255,255,.04)}
+
+  .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  .card{background:linear-gradient(180deg,rgba(22,39,72,.77),rgba(12,24,46,.83));border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 48px rgba(0,0,0,.16);padding:22px}
+  .card h3{margin:0 0 10px;font-size:1.22rem}.card p{color:#c4d0e8;line-height:1.62}.card .big{font-size:1.55rem;font-weight:900;letter-spacing:-.025em;color:#fff}
+  .accent-cyan{border-top:2px solid rgba(73,214,255,.75)}.accent-mint{border-top:2px solid rgba(94,230,185,.75)}.accent-amber{border-top:2px solid rgba(255,201,107,.8)}
+  .formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1rem,2vw,1.25rem);padding:14px 16px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--line);color:#e9f6ff;margin:12px 0}.formula strong{color:var(--mint)}
+  .tip{display:flex;gap:12px;padding:14px;border-radius:14px;background:rgba(73,214,255,.07);border:1px solid rgba(73,214,255,.16);color:#ccefff;line-height:1.5}.tip b{color:white}
+  .warning{background:rgba(255,201,107,.08);border-color:rgba(255,201,107,.2);color:#ffebc6}
+  .examples{display:grid;gap:10px;margin-top:14px}.example{padding:13px 14px;border-radius:13px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}.example strong{color:#fff}.example span{display:block;color:var(--muted);font-size:.88rem;margin-top:4px}
+
+  .form-lab{display:grid;gap:12px}.switches{display:flex;gap:8px;flex-wrap:wrap}.switch{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#c8d6ed;font-weight:800}.switch.active{background:rgba(73,214,255,.13);border-color:rgba(73,214,255,.35);color:white}.form-output{padding:18px;border-radius:16px;background:#071120;border:1px solid var(--line);min-height:84px;display:flex;align-items:center;flex-wrap:wrap;font-size:1.12rem}.token{display:inline-block;padding:6px 8px;border-radius:9px;margin:2px;background:rgba(255,255,255,.06)}.token.aux{color:var(--cyan)}.token.part{color:var(--mint)}.token.neg{color:var(--danger)}
+
+  .quiz-shell{padding:24px;border-radius:24px;background:rgba(12,24,47,.76);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .qmeta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.84rem;font-weight:800;margin-bottom:14px}.question{font-size:clamp(1.18rem,2.2vw,1.48rem);font-weight:850;line-height:1.45;margin-bottom:16px}.options{display:grid;gap:10px}.option{position:relative;text-align:left;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid var(--line);color:#e9f1ff;font-weight:720;transition:.18s ease}.option:hover:not(:disabled){transform:translateY(-1px);background:rgba(255,255,255,.075)}.option.correct{border-color:rgba(104,230,167,.55);background:rgba(104,230,167,.10)}.option.wrong{border-color:rgba(255,123,145,.55);background:rgba(255,123,145,.10)}.option:disabled{cursor:default}.feedback{display:none;margin-top:14px;padding:15px 16px;border-radius:14px;line-height:1.55}.feedback.show{display:block}.feedback.good{background:rgba(104,230,167,.09);border:1px solid rgba(104,230,167,.26);color:#d8ffeb}.feedback.bad{background:rgba(255,123,145,.09);border:1px solid rgba(255,123,145,.27);color:#ffdbe1}.feedback b{color:white}.quiz-nav{display:flex;justify-content:flex-end;margin-top:14px}.next-q{display:none}.next-q.show{display:inline-block}
+
+  .decision{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center}.decision-card{min-height:230px}.vs{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.05);border:1px solid var(--line);font-weight:900;color:var(--amber)}
+  .criterion{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}.criterion:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:50%;margin-top:7px;flex:0 0 auto}.dot.cyan{background:var(--cyan)}.dot.mint{background:var(--mint)}
+
+  .scenario{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px}.scene{padding:20px;border-radius:20px;background:linear-gradient(155deg,rgba(73,214,255,.12),rgba(94,230,185,.05));border:1px solid rgba(73,214,255,.18)}.scene .emoji{font-size:3rem}.scene h3{font-size:1.45rem}.scene p{color:#c5d2e6;line-height:1.65}.clues{display:grid;gap:10px}.clue{padding:13px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#dfe8f9}.clue b{color:var(--amber)}
+
+  .error-line{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035);margin-bottom:10px}.error-line code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#eaf3ff;font-size:.96rem}.error-actions{display:flex;gap:7px}.tiny{padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;font-weight:800}.inline-feedback{display:none;grid-column:1/-1;padding:10px 12px;border-radius:10px;color:#dbe8fb;background:rgba(0,0,0,.18);line-height:1.45}.inline-feedback.show{display:block}
+
+  .score-card{text-align:center;padding:28px}.score-ring{--pct:0deg;position:relative;width:170px;height:170px;margin:16px auto;border-radius:50%;background:conic-gradient(var(--mint) var(--pct),rgba(255,255,255,.08) 0);display:grid;place-items:center}.score-ring:before{content:"";width:132px;height:132px;border-radius:50%;background:#0b1730;position:absolute}.score-ring span{position:relative;font-size:2.4rem;font-weight:950}.level-badge{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(94,230,185,.1);border:1px solid rgba(94,230,185,.2);color:#caffed;font-weight:900}
+
+  .footer{margin-top:70px;padding:25px 0 5px;color:#8fa2c4;border-top:1px solid var(--line);font-size:.9rem;line-height:1.55}.source-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}.source-links a{padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-decoration:none}
+
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:80;padding:18px}.modal-backdrop.show{display:flex}.modal{width:min(760px,100%);max-height:88vh;overflow:auto;background:#0c1931;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 30px 100px rgba(0,0,0,.55)}.modal h2{margin:0 0 14px}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.meta-card{padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035)}.meta-card b{display:block;margin-bottom:4px}.meta-card span{color:var(--muted);line-height:1.45}.modal-close{float:right}
+  .kbd{padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-bottom-width:2px;border-radius:7px;background:rgba(255,255,255,.06);font-family:ui-monospace,monospace;font-size:.78rem}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .fade{animation:fade .28s ease}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+  /* Projection mode: larger, cleaner classroom display while preserving the same interactive flow. */
+  body.projection-mode .app{max-width:1480px;padding:12px 26px 80px}
+  body.projection-mode .topbar{top:0;border-radius:0 0 18px 18px;background:rgba(8,16,31,.94)}
+  body.projection-mode .hero{min-height:calc(100vh - 76px);padding-top:46px}
+  body.projection-mode .lead{font-size:clamp(1.2rem,2vw,1.52rem);max-width:900px}
+  body.projection-mode .section{scroll-margin-top:82px;padding-top:54px}
+  body.projection-mode .section h2{font-size:clamp(2.5rem,4.6vw,4.5rem)}
+  body.projection-mode .section .subtitle{font-size:1.08rem;max-width:920px}
+  body.projection-mode .card{padding:27px}
+  body.projection-mode .card h3{font-size:1.38rem}
+  body.projection-mode .card p,
+  body.projection-mode .criterion,
+  body.projection-mode .example,
+  body.projection-mode .tip{font-size:1.06rem}
+  body.projection-mode .quiz-shell{padding:30px}
+  body.projection-mode .question{font-size:clamp(1.45rem,2.35vw,1.9rem)}
+  body.projection-mode .option{padding:17px 20px;font-size:1.08rem}
+  body.projection-mode .feedback{font-size:1.05rem}
+  body.projection-mode .formula{font-size:clamp(1.12rem,2vw,1.42rem)}
+  body.projection-mode .scene p,body.projection-mode .clue{font-size:1.04rem}
+  body.projection-mode #projectionBtn{background:rgba(73,214,255,.14);border-color:rgba(73,214,255,.38);color:#dff8ff}
+  @media(max-width:850px){body.projection-mode .app{padding-left:14px;padding-right:14px}body.projection-mode .section h2{font-size:clamp(2.1rem,9vw,3.4rem)}body.projection-mode .option{font-size:1rem}}
+  @media(max-width:850px){.hero{grid-template-columns:1fr;min-height:auto;padding-top:52px}.hero-card{max-width:660px}.grid-2,.grid-3,.scenario{grid-template-columns:1fr}.decision{grid-template-columns:1fr}.vs{margin:auto}.topbar{top:6px}.brand small{display:none}.top-actions .label{display:none}.modal-grid{grid-template-columns:1fr}.section{padding-top:46px}}
+  @media(max-width:540px){.app{padding-left:12px;padding-right:12px}.topbar{gap:8px}.brand b{display:none}.icon-btn,.pill-btn{padding:8px 9px}.card,.quiz-shell{padding:17px}.error-line{grid-template-columns:1fr}.error-actions{justify-content:flex-start}.section-head{display:block}.step-tag{display:inline-block;margin-bottom:10px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">P²</div><div><b>Past Perfect Lab</b><small>Simple × Continuous</small></div></div>
+    <div class="progress-wrap" aria-label="Lesson progress"><div class="progress" id="progressBar"></div></div>
+    <div class="top-actions">
+      <button class="icon-btn" id="projectionBtn" title="Projection mode / fullscreen" aria-pressed="false">⛶ <span class="label">Projection</span></button>
+      <button class="icon-btn" id="teacherBtn" title="Teacher notes">ⓘ <span class="label">Teacher</span></button>
+      <button class="icon-btn" id="resetBtn" title="Reset lesson">↺ <span class="label">Reset</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="start">
+      <div>
+        <div class="eyebrow">Narrative grammar • B1+ → B2</div>
+        <h1><span>Past Perfect,</span><br>made logical.</h1>
+        <p class="lead">You already know how to talk about the past. Now learn how to move <strong>further back in time</strong> — and how to choose between a <strong>completed result</strong> and an <strong>activity in progress</strong>.</p>
+        <div class="hero-actions">
+          <button class="primary" onclick="goTo('anchor')">Start the lesson →</button>
+          <button class="secondary" onclick="goTo('finalQuiz')">Jump to final challenge</button>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div class="eyebrow">The big idea</div>
+        <h3 style="font-size:1.7rem;margin:14px 0 6px">Two past perfect forms. One past reference point.</h3>
+        <p style="color:var(--muted);line-height:1.6">Both forms look backwards from a moment in the past. The key question is what you want to focus on.</p>
+        <div class="timeline-demo">
+          <div class="axis"><div class="duration"></div><div class="event"></div><div class="past-point"></div></div>
+          <div class="axis-labels"><span>earlier past</span><span>past reference point</span><span>now</span></div>
+        </div>
+        <div class="mini-legend">
+          <div class="mini"><b>Simple</b><br>result / completion / earlier event</div>
+          <div class="mini"><b>Continuous</b><br>activity / duration / cause</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="anchor" data-progress="12">
+      <div class="section-head"><div><h2>1. Anchor the timeline</h2><p class="subtitle">Past perfect only makes sense when there is another past moment to look back from. Start with the chronology, not with the verb form.</p></div><div class="step-tag">STEP 01</div></div>
+      <div class="grid-3">
+        <div class="card accent-cyan"><h3>Event A — earlier</h3><p class="big">The bus left.</p><p>This happened first.</p></div>
+        <div class="card accent-amber"><h3>Event B — later</h3><p class="big">We arrived.</p><p>This is the past reference point.</p></div>
+        <div class="card accent-mint"><h3>Combine them</h3><p class="big">The bus <u>had left</u> when we arrived.</p><p><strong>Had left</strong> pushes Event A further back.</p></div>
+      </div>
+      <div class="tip" style="margin-top:16px"><div>💡</div><div><b>Think “past before past”.</b> The past perfect does not simply mean “a long time ago”. It marks a relationship between two past points.</div></div>
+    </section>
+
+    <section class="section" id="simple" data-progress="26">
+      <div class="section-head"><div><h2>2. Past Perfect Simple</h2><p class="subtitle">Use it when you want the listener to see an earlier action as completed, achieved, counted, or already true before another past moment.</p></div><div class="step-tag">STEP 02</div></div>
+      <div class="grid-2">
+        <div class="card accent-cyan">
+          <h3>Form</h3>
+          <div class="formula"><strong>had</strong> + past participle (V3)</div>
+          <div class="examples">
+            <div class="example"><strong>She had finished the report.</strong><span>full affirmative</span></div>
+            <div class="example"><strong>She’d finished the report.</strong><span>contracted affirmative — <b>’d = had</b></span></div>
+            <div class="example"><strong>She hadn’t finished the report.</strong><span>contracted negative — <b>hadn’t = had not</b></span></div>
+            <div class="example"><strong>Had she finished the report?</strong><span>question</span></div>
+          </div>
+        </div>
+        <div class="card accent-mint">
+          <h3>Use it for…</h3>
+          <div class="criterion"><span class="dot cyan"></span><div><b>completed earlier actions</b><br><span style="color:var(--muted)">By the time I called, he had left.</span></div></div>
+          <div class="criterion"><span class="dot cyan"></span><div><b>results / achievements</b><br><span style="color:var(--muted)">She was relieved because she had passed the exam.</span></div></div>
+          <div class="criterion"><span class="dot cyan"></span><div><b>experience before a past point</b><br><span style="color:var(--muted)">He had never flown before that trip.</span></div></div>
+          <div class="criterion"><span class="dot cyan"></span><div><b>states before a past point</b><br><span style="color:var(--muted)">They had known each other for years.</span></div></div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:16px"><div>🗣️</div><div><b>Contractions in real English.</b> After a pronoun, <em>had</em> is often shortened to <b>’d</b>: <em>I’d, you’d, he’d, she’d, it’d, we’d, they’d</em>. The negative is usually <b>hadn’t</b>. Be careful: <b>’d can also mean <em>would</em></b>. Compare <em>She’d finished</em> (= she <b>had</b> finished) with <em>She’d help</em> (= she <b>would</b> help). The structure after <b>’d</b> tells you what it means.</div></div>
+      <div class="card" style="margin-top:18px">
+        <h3>Build the form</h3><p style="margin-top:0;color:var(--muted)">Switch the sentence type and watch the word order. Try the contracted version too.</p>
+        <div class="form-lab">
+          <div class="switches" id="simpleSwitches"><button class="switch active" data-mode="affirmative">Affirmative</button><button class="switch" data-mode="contracted">Contracted</button><button class="switch" data-mode="negative">Negative</button><button class="switch" data-mode="question">Question</button></div>
+          <div class="form-output" id="simpleOutput"></div>
+        </div>
+      </div>
+      <div id="simpleQuiz" style="margin-top:18px"></div>
+    </section>
+
+    <section class="section" id="continuous" data-progress="44">
+      <div class="section-head"><div><h2>3. Past Perfect Continuous</h2><p class="subtitle">Use it when the important idea is the activity itself: how long it had been happening, what had been going on, or what caused a visible past result.</p></div><div class="step-tag">STEP 03</div></div>
+      <div class="grid-2">
+        <div class="card accent-mint">
+          <h3>Form</h3>
+          <div class="formula"><strong>had been</strong> + verb-ing</div>
+          <div class="examples">
+            <div class="example"><strong>They had been waiting for an hour.</strong><span>full affirmative</span></div>
+            <div class="example"><strong>They’d been waiting for an hour.</strong><span>contracted affirmative — <b>’d = had</b></span></div>
+            <div class="example"><strong>They hadn’t been waiting long.</strong><span>contracted negative</span></div>
+            <div class="example"><strong>Had they been waiting long?</strong><span>question</span></div>
+          </div>
+        </div>
+        <div class="card accent-amber">
+          <h3>Use it for…</h3>
+          <div class="criterion"><span class="dot mint"></span><div><b>duration up to a past point</b><br><span style="color:var(--muted)">She had been studying for three hours when I called.</span></div></div>
+          <div class="criterion"><span class="dot mint"></span><div><b>an activity still in progress</b><br><span style="color:var(--muted)">He had been reading when the lights went out.</span></div></div>
+          <div class="criterion"><span class="dot mint"></span><div><b>a cause with a past result</b><br><span style="color:var(--muted)">The pitch was muddy because it had been raining.</span></div></div>
+        </div>
+      </div>
+      <div class="tip warning" style="margin-top:16px"><div>⚠️</div><div><b>State verbs usually stay simple.</b> Verbs such as <em>know, believe, understand, like, own</em> normally do not take the continuous form: <em>They had known each other for years</em>, not <em>had been knowing</em>.</div></div>
+      <div id="continuousQuiz" style="margin-top:18px"></div>
+    </section>
+
+    <section class="section" id="contrast" data-progress="62">
+      <div class="section-head"><div><h2>4. Simple or continuous?</h2><p class="subtitle">The two forms often describe the same time relationship. What changes is the speaker’s focus.</p></div><div class="step-tag">STEP 04</div></div>
+      <div class="decision">
+        <div class="card decision-card accent-cyan">
+          <h3>Past Perfect Simple</h3>
+          <p class="big">Focus: the result</p>
+          <div class="criterion"><span class="dot cyan"></span><div>Was it <b>finished</b>?</div></div>
+          <div class="criterion"><span class="dot cyan"></span><div>Do we care about <b>how many / how much</b>?</div></div>
+          <div class="criterion"><span class="dot cyan"></span><div>Is it a <b>state</b> rather than an activity?</div></div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="card decision-card accent-mint">
+          <h3>Past Perfect Continuous</h3>
+          <p class="big">Focus: the activity</p>
+          <div class="criterion"><span class="dot mint"></span><div>Do we care about <b>how long</b>?</div></div>
+          <div class="criterion"><span class="dot mint"></span><div>Was it <b>in progress</b> up to that point?</div></div>
+          <div class="criterion"><span class="dot mint"></span><div>Did the activity <b>cause a past result</b>?</div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h3>Compare the meaning</h3>
+        <div class="grid-2" style="margin-top:12px">
+          <div class="example"><strong>Maya had written three pages before lunch.</strong><span>Result/count: three pages were complete.</span></div>
+          <div class="example"><strong>Maya had been writing for two hours before lunch.</strong><span>Activity/duration: the process matters.</span></div>
+          <div class="example"><strong>Tom had repaired the bike, so we could use it.</strong><span>Completed result: the bike was fixed.</span></div>
+          <div class="example"><strong>Tom was covered in oil because he had been repairing the bike.</strong><span>Past evidence: the activity explains the result.</span></div>
+        </div>
+      </div>
+      <div id="contrastQuiz" style="margin-top:18px"></div>
+    </section>
+
+    <section class="section" id="mission" data-progress="78">
+      <div class="section-head"><div><h2>5. Story mission: The locked classroom</h2><p class="subtitle">Use chronology and meaning, not isolated signal words. Each clue tells you whether the story needs a completed earlier event or an ongoing activity.</p></div><div class="step-tag">STEP 05</div></div>
+      <div class="scenario">
+        <div class="scene">
+          <div class="emoji">🔐</div>
+          <h3>Monday, 7:55 a.m.</h3>
+          <p>Your class arrived for a test, but the classroom door was locked. The teacher looked exhausted, the floor outside was wet, and the printed tests were already on the desk inside.</p>
+          <div class="clues">
+            <div class="clue"><b>Clue 1:</b> The tests were already printed.</div>
+            <div class="clue"><b>Clue 2:</b> The teacher was exhausted.</div>
+            <div class="clue"><b>Clue 3:</b> The corridor floor was wet.</div>
+          </div>
+        </div>
+        <div id="storyQuiz"></div>
+      </div>
+    </section>
+
+    <section class="section" id="errorLab" data-progress="88">
+      <div class="section-head"><div><h2>6. Error lab</h2><p class="subtitle">Decide whether each sentence is correct. If it is wrong, reveal the repair and the reason.</p></div><div class="step-tag">STEP 06</div></div>
+      <div class="card" id="errorContainer"></div>
+    </section>
+
+    <section class="section" id="finalQuiz" data-progress="96">
+      <div class="section-head"><div><h2>7. Final challenge</h2><p class="subtitle">Ten questions. Forms, meaning, chronology and contrast. Your result is stored only in this browser.</p></div><div class="step-tag">FINAL</div></div>
+      <div id="finalQuizMount"></div>
+      <div id="scoreMount" style="display:none"></div>
+    </section>
+
+    <section class="section" id="takeaway" data-progress="100">
+      <div class="card accent-mint">
+        <div class="eyebrow">One-minute takeaway</div>
+        <h2 style="margin-top:14px">Ask two questions.</h2>
+        <div class="grid-2">
+          <div class="card" style="background:rgba(73,214,255,.05)"><h3>1. What is my past reference point?</h3><p>If another event happened before it, a past perfect form may be needed.</p></div>
+          <div class="card" style="background:rgba(94,230,185,.05)"><h3>2. What is my focus?</h3><p><b>Result / completion / state → Simple.</b><br><b>Activity / duration / cause → Continuous.</b></p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>Sources & further reading</strong><br>This lesson is an original teaching resource based on the grammar principles in the sources below; example sentences and exercises were newly written for this lesson.
+    <div class="source-links">
+      <a href="https://www.helpforenglish.cz/article/2010060101-predminuly-cas" target="_blank" rel="noopener">Help for English — Past Perfect</a>
+      <a href="https://www.helpforenglish.cz/article/2006120803-predminuly-cas-prubehovy" target="_blank" rel="noopener">Help for English — Past Perfect Continuous</a>
+      <a href="https://www.helpforenglish.cz/article/2006063002-prehled-casu-urcenych-pro-vypravovani" target="_blank" rel="noopener">Help for English — Narrative Tenses</a>
+      <a href="https://dictionary.cambridge.org/grammar/british-grammar/past-perfect-continuous" target="_blank" rel="noopener">Cambridge Grammar — Simple vs Continuous</a>
+    </div>
+  </footer>
+</div>
+
+<div class="modal-backdrop" id="teacherModal" role="dialog" aria-modal="true" aria-labelledby="teacherTitle">
+  <div class="modal">
+    <button class="icon-btn modal-close" id="closeTeacher">✕</button>
+    <div class="eyebrow">Teacher notes</div>
+    <h2 id="teacherTitle">Lesson setup</h2>
+    <div class="modal-grid">
+      <div class="meta-card"><b>Cílová úroveň</b><span>B1+ až B2</span></div>
+      <div class="meta-card"><b>Ročník / věk</b><span>3. ročník čtyřletého gymnázia, cca 17–18 let</span></div>
+      <div class="meta-card"><b>Cíl aktivity</b><span>Student tvoří a používá past perfect simple a past perfect continuous a dokáže volbu vysvětlit podle chronologie a významového fokusu.</span></div>
+      <div class="meta-card"><b>Odhad času</b><span>45–60 minut; lze rozdělit po sekcích.</span></div>
+      <div class="meta-card"><b>Slabší žáci</b><span>Nechat otevřené sekce 2–4 při cvičení, pracovat ve dvojicích a verbalizovat dvě otázky z Takeaway.</span></div>
+      <div class="meta-card"><b>Silnější žáci</b><span>Po každé odpovědi požadovat alternativní větu se změnou fokusu; ve Story mission doplnit vlastní dvě věty a obhájit volbu času.</span></div>
+    </div>
+    <p style="color:var(--muted);line-height:1.6;margin-top:18px"><b style="color:#fff">Doporučený workflow:</b> 5 min časová osa → 10 min Simple → 10 min Continuous → 10–15 min kontrast → 8 min story mission → 5–8 min final challenge. Klávesa <span class="kbd">Home</span> vrací na začátek, <span class="kbd">End</span> na závěrečný tahák.</p>
+  </div>
+</div>
+
+<script>
+const state = JSON.parse(localStorage.getItem('ppLabState') || '{}');
+state.correct = state.correct || 0;
+state.answered = state.answered || 0;
+
+const simpleQuestions = [
+  {
+    q:"When we reached the cinema, the film ____.",
+    options:["already started","had already started","had already been starting"],
+    answer:1,
+    exp:"The film started before we reached the cinema, and the focus is the completed earlier event. Use had + past participle: had started."
+  },
+  {
+    q:"She was nervous because she ____ in front of such a large audience before.",
+    options:["had never spoken","had never been speaking","never spoke"],
+    answer:0,
+    exp:"This is experience before a past point. 'Had never spoken' looks back from the moment when she was nervous."
+  },
+  {
+    q:"By 6 p.m., Leo ____ all twelve customer emails.",
+    options:["had answered","had been answering","answered"],
+    answer:0,
+    exp:"The number 'all twelve' highlights a completed result. Past perfect simple is the natural choice."
+  }
+];
+
+const continuousQuestions = [
+  {
+    q:"Nina's eyes were tired because she ____ at the screen for hours.",
+    options:["had looked","had been looking","was looking"],
+    answer:1,
+    exp:"The past result (tired eyes) is explained by an activity that had continued for a period of time."
+  },
+  {
+    q:"How long ____ before the doctor finally saw you?",
+    options:["had you waited","had you been waiting","were you waiting"],
+    answer:1,
+    exp:"The question explicitly focuses on duration up to a later point in the past, so the continuous form is preferred."
+  },
+  {
+    q:"They ____ each other for ten years before they started the company together.",
+    options:["had known","had been knowing","were knowing"],
+    answer:0,
+    exp:"Know is normally a state verb, so we use the simple form: had known."
+  }
+];
+
+const contrastQuestions = [
+  {
+    q:"At 9:00, the kitchen was finally ready. We ____ it completely.",
+    options:["had cleaned","had been cleaning"],
+    answer:0,
+    exp:"'Completely' points to a finished result: the kitchen was clean."
+  },
+  {
+    q:"Our clothes were dusty because we ____ the attic all afternoon.",
+    options:["had cleared","had been clearing"],
+    answer:1,
+    exp:"The dusty clothes are evidence of the activity, and 'all afternoon' highlights duration."
+  },
+  {
+    q:"Before the server crashed, the technician ____ three backups.",
+    options:["had created","had been creating"],
+    answer:0,
+    exp:"'Three backups' gives a completed count — a result — so simple is the better fit."
+  },
+  {
+    q:"When the coach arrived, the players ____ for forty minutes and were exhausted.",
+    options:["had trained","had been training"],
+    answer:1,
+    exp:"Duration plus a visible result (exhaustion) makes the continuous form the natural focus."
+  }
+];
+
+const storyQuestions = [
+  {q:"The tests were already on the desk because the teacher ____ them before 7:30.",options:["had printed","had been printing"],answer:0,exp:"The tests are a finished product. We care about the completed result."},
+  {q:"The teacher looked exhausted because she ____ since 5 a.m.",options:["had worked","had been working"],answer:1,exp:"The focus is duration and the activity that caused her exhaustion."},
+  {q:"The corridor was wet because a cleaner ____ the floor.",options:["had washed","had been washing"],answer:1,exp:"The wet floor is evidence of a recent ongoing activity. The continuous form explains the past result."},
+  {q:"The door would not open because someone ____ the wrong key in the lock.",options:["had left","had been leaving"],answer:0,exp:"Leaving the key is a completed earlier action with a result at the later past moment."}
+];
+
+const finalQuestions = [
+  {q:"By the time I got to the station, the last train ____.", options:["had left","had been leaving","left"], answer:0, exp:"A completed earlier event before another past event."},
+  {q:"Ben was out of breath because he ____ for twenty minutes.", options:["had run","had been running","ran"], answer:1, exp:"Duration + a past result → continuous."},
+  {q:"We ____ the answer for months before the truth became public.", options:["had known","had been knowing","knew"], answer:0, exp:"Know is a state verb, so the simple form is standard."},
+  {q:"Before the guests arrived, Mia ____ six desserts.", options:["had made","had been making"], answer:0, exp:"Six desserts = completed count/result."},
+  {q:"The road was slippery because it ____ all night.", options:["had snowed","had been snowing"], answer:1, exp:"The continuing weather activity explains the past condition."},
+  {q:"Which sentence focuses most clearly on a finished result?", options:["I had been writing the report for two hours.","I had written the report before lunch."], answer:1, exp:"The second sentence presents the report as completed."},
+  {q:"Which sentence is NOT standard English?", options:["She had believed him for years.","She had been believing him for years."], answer:1, exp:"Believe is normally a state verb and does not usually take a continuous form."},
+  {q:"At the meeting, he was confident because he ____ the presentation twice already.", options:["had rehearsed","had been rehearsing"], answer:0, exp:"'Twice' counts completed repetitions, so simple is the clearer choice."},
+  {q:"When the fire alarm rang, we ____ for nearly an hour.", options:["had studied","had been studying"], answer:1, exp:"The emphasis is on how long the activity had continued up to the alarm."},
+  {q:"Choose the best summary.", options:["Simple = earlier; continuous = later.","Simple = result/completion; continuous = activity/duration, both viewed from a later past point.","Continuous is used whenever a sentence contains 'for'."], answer:1, exp:"The contrast is about focus, not merely about which event happened earlier or a single signal word."}
+];
+
+const errors = [
+  {text:"When we arrived, the concert had been already started.", correct:false, repair:"When we arrived, the concert had already started.", reason:"Start is a point-like event here; use the simple form, not had been starting."},
+  {text:"She had been studying for two hours when her laptop crashed.", correct:true, repair:"", reason:"Correct: duration up to a later past event is exactly what the continuous form expresses."},
+  {text:"They had been known each other since primary school.", correct:false, repair:"They had known each other since primary school.", reason:"Know is a state verb and normally stays in a simple form."},
+  {text:"I was relaxed because I had finished the difficult part the day before.", correct:true, repair:"", reason:"Correct: the finished task is an earlier completed result that explains the later past state."},
+  {text:"He had been writing five emails before lunch.", correct:false, repair:"He had written five emails before lunch.", reason:"The completed count 'five emails' points to the simple form. Continuous would work if the focus were the activity rather than five finished emails."}
+];
+
+function save(){ localStorage.setItem('ppLabState', JSON.stringify(state)); }
+function goTo(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function renderQuiz(mountId, questions, title, nextTarget){
+  const mount=document.getElementById(mountId);
+  let idx=0;
+  let localCorrect=0;
+  const render=()=>{
+    const item=questions[idx];
+    mount.innerHTML=`<div class="quiz-shell fade"><div class="qmeta"><span>${title}</span><span>${idx+1} / ${questions.length}</span></div><div class="question">${item.q}</div><div class="options">${item.options.map((o,i)=>`<button class="option" data-i="${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="feedback" id="${mountId}-fb"></div><div class="quiz-nav"><button class="primary next-q" id="${mountId}-next">${idx===questions.length-1?'Finish':'Next →'}</button></div></div>`;
+    const buttons=[...mount.querySelectorAll('.option')];
+    const fb=mount.querySelector('.feedback');
+    const next=mount.querySelector('.next-q');
+    buttons.forEach(btn=>btn.addEventListener('click',()=>{
+      const chosen=Number(btn.dataset.i);
+      buttons.forEach((b,i)=>{b.disabled=true;if(i===item.answer)b.classList.add('correct')});
+      state.answered++;
+      if(chosen===item.answer){btn.classList.add('correct');fb.className='feedback good show';fb.innerHTML=`<b>Correct.</b> ${item.exp}`;localCorrect++;state.correct++;}
+      else{btn.classList.add('wrong');fb.className='feedback bad show';fb.innerHTML=`<b>Not quite.</b> ${item.exp}`;}
+      next.classList.add('show');save();
+    },{once:true}));
+    next.addEventListener('click',()=>{
+      if(idx<questions.length-1){idx++;render();}
+      else{mount.innerHTML=`<div class="quiz-shell fade"><div class="qmeta"><span>${title}</span><span>Complete</span></div><div class="question">Section score: ${localCorrect}/${questions.length}</div><p style="color:var(--muted);line-height:1.6">${localCorrect===questions.length?'Excellent — you controlled both form and meaning.':'Review the explanation cards above, then continue. The next tasks will recycle the same distinction in context.'}</p><button class="secondary" onclick="goTo('${nextTarget}')">Keep going ↓</button></div>`;}
+    });
+  };
+  render();
+}
+
+function renderFinal(){
+  const mount=document.getElementById('finalQuizMount');
+  const scoreMount=document.getElementById('scoreMount');
+  let idx=0, score=0;
+  function draw(){
+    const item=finalQuestions[idx];
+    mount.style.display='block';scoreMount.style.display='none';
+    mount.innerHTML=`<div class="quiz-shell fade"><div class="qmeta"><span>Final challenge</span><span>${idx+1} / ${finalQuestions.length}</span></div><div class="question">${item.q}</div><div class="options">${item.options.map((o,i)=>`<button class="option" data-i="${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="feedback"></div><div class="quiz-nav"><button class="primary next-q">${idx===finalQuestions.length-1?'Show result':'Next →'}</button></div></div>`;
+    const buttons=[...mount.querySelectorAll('.option')], fb=mount.querySelector('.feedback'), next=mount.querySelector('.next-q');
+    buttons.forEach(btn=>btn.addEventListener('click',()=>{
+      const chosen=Number(btn.dataset.i);buttons.forEach((b,i)=>{b.disabled=true;if(i===item.answer)b.classList.add('correct')});
+      if(chosen===item.answer){score++;btn.classList.add('correct');fb.className='feedback good show';fb.innerHTML=`<b>Correct.</b> ${item.exp}`;}else{btn.classList.add('wrong');fb.className='feedback bad show';fb.innerHTML=`<b>Not quite.</b> ${item.exp}`;}
+      next.classList.add('show');
+    },{once:true}));
+    next.addEventListener('click',()=>{if(idx<finalQuestions.length-1){idx++;draw()}else showScore()});
+  }
+  function showScore(){
+    mount.style.display='none';scoreMount.style.display='block';
+    const pct=Math.round(score/finalQuestions.length*100);let msg,badge;
+    if(pct>=90){badge='Mastery';msg='You are consistently choosing the tense from meaning, not from signal words.'}
+    else if(pct>=70){badge='Secure';msg='Strong understanding. Revisit the items where result and duration competed.'}
+    else if(pct>=50){badge='Developing';msg='The timeline is there, but the result-versus-activity contrast needs another pass.'}
+    else{badge='Review';msg='Return to sections 2–4 and rebuild the distinction before trying again.'}
+    scoreMount.innerHTML=`<div class="card score-card fade"><div class="eyebrow">Result</div><div class="score-ring" style="--pct:${pct*3.6}deg"><span>${score}/10</span></div><div class="level-badge">${badge}</div><h3 style="font-size:1.7rem;margin-bottom:8px">${pct}%</h3><p style="color:var(--muted);max-width:620px;margin:0 auto 20px;line-height:1.6">${msg}</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="primary" id="retryFinal">Try again</button><button class="secondary" onclick="goTo('takeaway')">Show takeaway →</button></div></div>`;
+    scoreMount.querySelector('#retryFinal').addEventListener('click',()=>{idx=0;score=0;draw()});
+  }
+  draw();
+}
+
+function renderErrors(){
+  const mount=document.getElementById('errorContainer');
+  mount.innerHTML=`<h3 style="margin-top:0">Correct or incorrect?</h3>`+errors.map((e,i)=>`<div class="error-line"><code>${i+1}. ${e.text}</code><div class="error-actions"><button class="tiny" data-e="${i}" data-choice="correct">✓ Correct</button><button class="tiny" data-e="${i}" data-choice="wrong">✕ Incorrect</button></div><div class="inline-feedback" id="err-${i}"></div></div>`).join('');
+  mount.querySelectorAll('[data-e]').forEach(btn=>btn.addEventListener('click',()=>{
+    const i=Number(btn.dataset.e), choice=btn.dataset.choice, e=errors[i], fb=document.getElementById(`err-${i}`); const guessedCorrect=choice==='correct';
+    const ok=guessedCorrect===e.correct;
+    fb.className='inline-feedback show';
+    fb.innerHTML=`<b style="color:${ok?'var(--good)':'var(--danger)'}">${ok?'Correct judgement.':'Not quite.'}</b> ${e.correct?e.reason:`<br><b>Repair:</b> ${e.repair}<br>${e.reason}`}`;
+  }));
+}
+
+function updateSimpleForm(mode='affirmative'){
+  const out=document.getElementById('simpleOutput');
+  const html={
+    affirmative:`<span class="token">She</span><span class="token aux">had</span><span class="token part">finished</span><span class="token">the report.</span>`,
+    contracted:`<span class="token aux">She’d</span><span class="token part">finished</span><span class="token">the report.</span><span class="token" style="color:var(--muted)">’d = had</span>`,
+    negative:`<span class="token">She</span><span class="token aux">hadn’t</span><span class="token part">finished</span><span class="token">the report.</span>`,
+    question:`<span class="token aux">Had</span><span class="token">she</span><span class="token part">finished</span><span class="token">the report?</span>`
+  };
+  out.innerHTML=html[mode];
+}
+
+document.querySelectorAll('#simpleSwitches .switch').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('#simpleSwitches .switch').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateSimpleForm(btn.dataset.mode);
+}));
+updateSimpleForm();
+renderQuiz('simpleQuiz', simpleQuestions, 'Quick check — Simple', 'continuous');
+renderQuiz('continuousQuiz', continuousQuestions, 'Quick check — Continuous', 'contrast');
+renderQuiz('contrastQuiz', contrastQuestions, 'Meaning check — Contrast', 'mission');
+renderQuiz('storyQuiz', storyQuestions, 'Story mission', 'errorLab');
+renderErrors();
+renderFinal();
+
+
+const projectionBtn=document.getElementById('projectionBtn');
+function setProjectionMode(on){
+  document.body.classList.toggle('projection-mode',on);
+  projectionBtn.setAttribute('aria-pressed',String(on));
+  projectionBtn.innerHTML=on?'↙ <span class="label">Exit projection</span>':'⛶ <span class="label">Projection</span>';
+  projectionBtn.title=on?'Exit projection mode':'Projection mode / fullscreen';
+}
+async function toggleProjection(){
+  const entering=!document.body.classList.contains('projection-mode');
+  setProjectionMode(entering);
+  if(entering){
+    try{
+      if(!document.fullscreenElement && document.documentElement.requestFullscreen){
+        await document.documentElement.requestFullscreen();
+      }
+    }catch(err){
+      // Keep the enlarged projection layout even if the browser blocks fullscreen.
+    }
+  }else if(document.fullscreenElement && document.exitFullscreen){
+    try{await document.exitFullscreen();}catch(err){}
+  }
+}
+projectionBtn.addEventListener('click',toggleProjection);
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement && document.body.classList.contains('projection-mode')) setProjectionMode(false);
+});
+
+const teacherModal=document.getElementById('teacherModal');
+document.getElementById('teacherBtn').addEventListener('click',()=>teacherModal.classList.add('show'));
+document.getElementById('closeTeacher').addEventListener('click',()=>teacherModal.classList.remove('show'));
+teacherModal.addEventListener('click',e=>{if(e.target===teacherModal)teacherModal.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')teacherModal.classList.remove('show');if(e.key==='Home')goTo('start');if(e.key==='End')goTo('takeaway')});
+
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(confirm('Reset all saved progress for this lesson?')){localStorage.removeItem('ppLabState');location.reload();}
+});
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{if(entry.isIntersecting){const p=entry.target.dataset.progress;if(p)document.getElementById('progressBar').style.width=p+'%';}})
+},{threshold:.38});
+document.querySelectorAll('[data-progress]').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
