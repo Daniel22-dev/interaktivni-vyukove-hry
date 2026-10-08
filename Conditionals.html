@@ -124,6 +124,9 @@
       box-shadow: 0 12px 34px rgba(85,216,255,.08);
     }
     .primary-btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+    .reset-all-btn { border-color: rgba(255,207,112,.38); color: #ffe4aa; white-space: nowrap; }
+    .reset-all-btn:hover { background: rgba(255,207,112,.13); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .mini-btn { padding: 7px 10px; border-radius: 12px; font-size: .9rem; }
 
     main { max-width: var(--max); margin: 0 auto; padding: 34px 18px 100px; }
@@ -456,6 +459,7 @@
       .cond-card:last-child { grid-column: auto; }
       .topbar-inner { gap: 8px; }
       .top-actions .label { display: none; }
+       .reset-all-btn { padding: 9px 10px; font-size: .85rem; }
       .progress-shell { display: none; }
       .options, .feedback { margin-left: 0; }
       .input-row { grid-template-columns: 1fr; }
@@ -482,11 +486,13 @@
       </div>
       <div class="progress-shell" aria-label="Page progress"><div id="pageProgress" class="progress-fill"></div></div>
       <div class="top-actions">
+        <button class="ghost-btn reset-all-btn" id="resetAllBtn" type="button" title="Clear all saved answers and restart every exercise" aria-label="Reset all exercises">↺ <span class="reset-label">Reset all</span></button>
         <button class="ghost-btn" id="teacherBtn" title="Toggle teacher notes">⌁ <span class="label">Teacher</span></button>
         <button class="primary-btn" id="projectorBtn" title="Projector mode / fullscreen">⛶ <span class="label">Projector</span></button>
       </div>
     </div>
   </header>
+  <div id="resetStatus" class="sr-only" role="status" aria-live="polite"></div>
 
   <main>
     <section class="hero" id="start">
@@ -504,6 +510,7 @@
           <a href="#map"><button class="primary-btn">Start the review →</button></a>
           <a href="#final"><button class="ghost-btn">Jump to final challenge</button></a>
         </div>
+        <p class="tiny">Using a shared computer? Select <strong>Reset all</strong> in the top bar before a new student starts.</p>
       </div>
       <aside class="hero-card">
         <div class="tiny">TODAY'S MISSION</div>
@@ -610,7 +617,7 @@
         <div id="diagnosticQuiz" class="quiz-list"></div>
         <div class="scorebar">
           <div class="score-pill"><strong id="diagScore">0/8</strong><span>checked</span></div>
-          <button class="ghost-btn" onclick="resetQuiz('diagnostic')">Reset</button>
+          <button class="ghost-btn" type="button" onclick="resetQuiz('diagnostic')">Reset section</button>
         </div>
       </div>
     </section>
@@ -634,6 +641,7 @@
       </div>
       <div class="panel" style="margin-top:14px">
         <div id="contrastQuiz" class="quiz-list"></div>
+        <div class="scorebar"><div class="score-pill"><strong id="contrastScore">0/4</strong><span>correct</span></div><button class="ghost-btn" type="button" onclick="resetQuiz('contrast')">Reset section</button></div>
       </div>
     </section>
 
@@ -646,7 +654,7 @@
         <div id="gapQuiz" class="quiz-list"></div>
         <div class="scorebar">
           <div class="score-pill"><strong id="gapScore">0/10</strong><span>correct</span></div>
-          <button class="ghost-btn" onclick="resetQuiz('gap')">Reset</button>
+          <button class="ghost-btn" type="button" onclick="resetQuiz('gap')">Reset section</button>
         </div>
       </div>
       <div class="callout amber"><strong>Exam-safe default:</strong> in an ordinary first conditional, use a present form after <em>if</em>, not future <em>will</em>. In an ordinary second conditional, do not mechanically put <em>would</em> in the if-clause. Advanced exceptions exist when <em>will / would</em> carries its own meaning such as willingness, insistence or politeness.</div>
@@ -673,6 +681,7 @@
       </div>
       <div class="panel" style="margin-top:14px">
         <div id="mixedQuiz" class="quiz-list"></div>
+        <div class="scorebar"><div class="score-pill"><strong id="mixedScore">0/4</strong><span>correct</span></div><button class="ghost-btn" type="button" onclick="resetQuiz('mixed')">Reset section</button></div>
       </div>
     </section>
 
@@ -683,6 +692,7 @@
       </div>
       <div class="panel">
         <div id="errorQuiz" class="quiz-list"></div>
+        <div class="scorebar"><div class="score-pill"><strong id="errorScore">0/6</strong><span>correct</span></div><button class="ghost-btn" type="button" onclick="resetQuiz('errors')">Reset section</button></div>
       </div>
     </section>
 
@@ -740,7 +750,7 @@
             <div class="score-pill"><strong id="finalScore">0/12</strong><span>score</span></div>
             <div id="finalMessage" class="tiny">Finish the challenge to get a diagnostic message.</div>
           </div>
-          <button class="ghost-btn" onclick="resetQuiz('final')">Reset final challenge</button>
+          <button class="ghost-btn" type="button" onclick="resetQuiz('final')">Reset section</button>
         </div>
       </div>
     </section>
@@ -958,6 +968,9 @@
       document.getElementById('diagScore').textContent = `${d.count}/8`;
       document.getElementById('gapScore').textContent = `${g.count}/10`;
       document.getElementById('finalScore').textContent = `${f.count}/12`;
+      document.getElementById('contrastScore').textContent = `${score('contrast', 4).count}/4`;
+      document.getElementById('mixedScore').textContent = `${score('mixed', 4).count}/4`;
+      document.getElementById('errorScore').textContent = `${score('errors', 6).count}/6`;
       const msg = document.getElementById('finalMessage');
       if (f.attempted < 12) {
         msg.textContent = `${f.attempted}/12 answered. Keep going.`;
@@ -972,18 +985,40 @@
       }
     }
 
-    function resetQuiz(group) {
+    function clearQuiz(group) {
+      if (!Object.prototype.hasOwnProperty.call(state, group)) return;
       state[group] = {};
       document.querySelectorAll(`[data-group="${group}"]`).forEach(card => {
-        card.classList.remove('correct','incorrect');
-        card.querySelectorAll('.option').forEach(o => o.classList.remove('selected','right','wrong'));
-        const f = card.querySelector('.feedback');
-        if (f) f.classList.remove('show');
-        const input = card.querySelector('input');
-        if (input) input.value = '';
+        card.classList.remove('correct', 'incorrect');
+        card.querySelectorAll('.option').forEach(o => o.classList.remove('selected', 'right', 'wrong'));
+        const feedback = card.querySelector('.feedback');
+        if (feedback) {
+          feedback.classList.remove('show');
+          feedback.querySelector('strong').textContent = '';
+          feedback.querySelector('span').textContent = '';
+        }
+        card.querySelectorAll('input').forEach(input => { input.value = ''; });
       });
+    }
+
+    function resetQuiz(group) {
+      if (!Object.prototype.hasOwnProperty.call(state, group)) return;
+      clearQuiz(group);
       updateScores();
       saveState();
+      document.getElementById('resetStatus').textContent = 'Section reset.';
+    }
+
+    function resetAllQuizzes() {
+      if (!window.confirm('Reset all six exercises? This will permanently clear the answers saved on this device.')) return;
+      Object.keys(state).forEach(clearQuiz);
+      document.querySelectorAll('.scenario .reveal').forEach(reveal => reveal.classList.remove('show'));
+      document.querySelectorAll('.scenario .mini-btn').forEach(button => {
+        button.textContent = 'Reveal language support';
+      });
+      updateScores();
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      document.getElementById('resetStatus').textContent = 'All six exercises have been reset.';
     }
 
     function toggleReveal(btn) {
@@ -992,14 +1027,20 @@
       btn.textContent = r.classList.contains('show') ? 'Hide language support' : 'Reveal language support';
     }
 
+    const STORAGE_KEY = 'conditionals4A4';
+
     function saveState() {
-      try { localStorage.setItem('conditionals4A4', JSON.stringify(state)); } catch(e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
     }
 
     function loadState() {
       try {
-        const saved = JSON.parse(localStorage.getItem('conditionals4A4') || '{}');
-        Object.keys(state).forEach(k => state[k] = saved[k] || {});
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+        Object.keys(state).forEach(k => {
+          const group = saved[k];
+          state[k] = group && typeof group === 'object' && !Array.isArray(group) ? group : {};
+        });
       } catch(e) {}
     }
 
@@ -1032,6 +1073,8 @@
     renderChoiceQuiz('finalQuiz', quizData.final, 'final');
     loadState();
     restoreVisualState();
+
+    document.getElementById('resetAllBtn').addEventListener('click', resetAllQuizzes);
 
     window.addEventListener('scroll', () => {
       const el = document.documentElement;
